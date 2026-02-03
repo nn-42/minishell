@@ -6,7 +6,7 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/03 12:30:29 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/02/03 12:45:02 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/02/03 12:58:34 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 # define MINISHELL_H
 
 # include "libft.h"
-#include <readline/readline.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 
 # include <stdio.h>
 # include <stdlib.h>
