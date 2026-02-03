@@ -15,6 +15,7 @@ OBJS = $(SRC:.c=.o)
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
+READLINE = -lreadline
 
 # Includes
 INC = -Ilibft -Iinclude
@@ -24,7 +25,7 @@ all: $(LIBFT) $(NAME)
 
 # Build program
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(READLINE) -o $(NAME)
 
 # Compile .c to .o
 %.o: %.c
