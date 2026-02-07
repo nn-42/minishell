@@ -6,7 +6,7 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/03 12:30:29 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/02/07 12:13:04 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/02/07 12:54:24 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,6 @@
 # include <termios.h>
 # include <curses.h>
 
-
+int g_signal;
 
 #endif

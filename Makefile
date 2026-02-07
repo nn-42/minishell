@@ -6,7 +6,7 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
 # Sources
-SRC = 
+SRC = src/minishell.c
 
 # Objects
 OBJS = $(SRC:.c=.o)
