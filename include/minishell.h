@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnasered <nnasered@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/03 12:30:29 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/02/03 13:50:10 by nnasered         ###   ########.fr       */
+/*   Updated: 2026/02/07 12:13:04 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,9 @@
 # define MINISHELL_H
 
 # include "libft.h"
+
 # include <readline/readline.h>
 # include <readline/history.h>
-
-#include <readline/history.h>
-
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
