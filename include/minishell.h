@@ -6,12 +6,13 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/03 12:30:29 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/02/07 13:14:52 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/02/09 13:31:44 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+# define _POSIX_C_SOURCE 199309L
 
 # include "libft.h"
 
@@ -23,13 +24,19 @@
 # include <fcntl.h>
 # include <sys/stat.h>
 # include <sys/wait.h>
-# include <signal.h>
 # include <dirent.h>
 # include <string.h>
 # include <sys/ioctl.h>
 # include <termios.h>
 # include <curses.h>
+# include <signal.h>
 
-volatile sig_atomic_t	g_signal;
+extern int	g_signal;
+
+// signals
+void	handler_cntrc(int sig);
+void	handler_backslash(int sig);
+void	cntrc(char **line);
+void	signals(void);
 
 #endif
