@@ -13,5 +13,15 @@
 ## 🗃️ Resources
 
 ### 📚 References
+- SIGNALS
+
+    - [Previous project - Minitalk](https://cdn.intra.42.fr/pdf/pdf/196645/en.subject.pdf)
+    - man sigaction
+    - man 7 signal
+- readline
+
+    - 
+
+
 
 ### 🤖 AI Usage
