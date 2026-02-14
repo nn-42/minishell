@@ -6,13 +6,14 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/03 12:30:29 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/02/09 14:20:12 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/02/14 14:29:17 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
-# define _POSIX_C_SOURCE 199309L
+//# define _POSIX_C_SOURCE 199309L
+# define _POSIX_C_SOURCE 200809L
 
 # include "libft.h"
 
@@ -33,10 +34,29 @@
 
 extern int	g_signal;
 
+typedef enum e_token_type
+{
+	WORD,
+	PIPE,
+	REDIR_IN,
+	REDIR_OUT
+}	t_token_type;
+
+typedef struct s_token
+{
+	char			*value;
+	t_token_type	type;
+	struct s_token	*next;
+}	t_token;
+
 // signals
 void	handler_cntrc(int sig);
 void	handler_backslash(int sig);
-void	cntrc(char **line);
 void	signals(void);
+
+// lexer
+t_token	*lexer(const char *line);
+void	print_tokens(t_token *tokens);
+void	free_tokens(t_token *tokens);
 
 #endif
