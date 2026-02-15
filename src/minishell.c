@@ -6,7 +6,7 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 12:35:40 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/02/14 14:24:03 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/02/16 01:03:57 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int	main(void)
 	char	*line;
 	t_token	*tokens;
 
-	rl_catch_signals = 0;
 	signals();
 	while (1)
 	{
@@ -32,6 +31,7 @@ int	main(void)
 		}
 		if (*line)
 			add_history(line);
+		//lexer(line);
 		tokens = lexer(line);
 		print_tokens(tokens);
 		free_tokens(tokens);

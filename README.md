@@ -20,7 +20,6 @@
     - man sigaction
     - man 7 signal
 - readline
-
     - 
 - Lexical and Token
     - [Introduction of Lexical Analysis](https://www.geeksforgeeks.org/compiler-design/introduction-of-lexical-analysis/)

@@ -6,7 +6,7 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/03 12:30:29 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/02/14 14:29:17 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/02/16 00:47:30 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,16 +36,18 @@ extern int	g_signal;
 
 typedef enum e_token_type
 {
-	WORD,
-	PIPE,
-	REDIR_IN,
-	REDIR_OUT
+	TOKEN_WORD,
+	TOKEN_PIPE,
+	TOKEN_REDIR_IN,
+	TOKEN_REDIR_OUT,
+	TOKEN_APPEND,
+	TOKEN_HEREDOC
 }	t_token_type;
 
 typedef struct s_token
 {
-	char			*value;
 	t_token_type	type;
+	char			*value;
 	struct s_token	*next;
 }	t_token;
 
@@ -55,8 +57,17 @@ void	handler_backslash(int sig);
 void	signals(void);
 
 // lexer
-t_token	*lexer(const char *line);
-void	print_tokens(t_token *tokens);
+t_token	*lexer(char *line);
+void	hori(char *line, int *i, t_token **tokens);
+void	aort(char *line, int *i, t_token **tokens);
+void	operator(char *line, int *i, t_token **tokens);
+void	word(char *line, int *i, t_token **tokens);
+
+// utils_lexer
+int		add_token(t_token	**tokens, t_token_type type, char *value);
 void	free_tokens(t_token *tokens);
+
+//test_lexer
+void	print_tokens(t_token *tokens);
 
 #endif
