@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nfaronia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: nnasered <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/11 14:26:24 by nfaronia          #+#    #+#             */
-/*   Updated: 2025/08/28 12:14:43 by nfaronia         ###   ########.fr       */
+/*   Created: 2025/08/15 10:22:59 by nnasered          #+#    #+#             */
+/*   Updated: 2025/08/17 12:49:15 by nnasered         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,19 @@
 
 char	*ft_strnstr(const char *big, const char *little, size_t len)
 {
-	size_t	i;
-	size_t	j;
+	size_t	little_len;
 
-	i = 0;
 	if (*little == '\0')
 		return ((char *)big);
-	while (i < len && big[i])
+	if (len == 0)
+		return (NULL);
+	little_len = ft_strlen(little);
+	while (*big && len >= little_len)
 	{
-		j = 0;
-		while (i + j < len && little[j] && big[i + j] == little[j])
-			j++;
-		if (little[j] == '\0')
-			return ((char *)(big + i));
-		i++;
+		if (ft_strncmp(big, little, little_len) == 0)
+			return ((char *)big);
+		big++;
+		len--;
 	}
-	return (0);
+	return (NULL);
 }
-
-/*
-#include <stdio.h>
-
-int	main(void)
-{
-	printf("%s", ft_strnstr("noor faronia", "fo", 10));
-	return (0);
-}*/

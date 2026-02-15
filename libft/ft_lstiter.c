@@ -1,18 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isascii.c                                       :+:      :+:    :+:   */
+/*   ft_lstiter_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nnasered <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/15 10:16:33 by nnasered          #+#    #+#             */
-/*   Updated: 2025/08/15 10:16:39 by nnasered         ###   ########.fr       */
+/*   Created: 2025/08/18 14:05:28 by nnasered          #+#    #+#             */
+/*   Updated: 2025/08/26 11:19:47 by nnasered         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_isascii(int c)
+void	ft_lstiter(t_list *lst, void (*f)(void *))
 {
-	return (c >= 0 && c <= 127);
+	while (lst)
+	{
+		f(lst->content);
+		lst = lst->next;
+	}
 }

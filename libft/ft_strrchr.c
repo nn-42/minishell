@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nfaronia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: nnasered <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/11 14:18:33 by nfaronia          #+#    #+#             */
-/*   Updated: 2025/08/28 11:41:24 by nfaronia         ###   ########.fr       */
+/*   Created: 2025/08/15 10:23:17 by nnasered          #+#    #+#             */
+/*   Updated: 2025/08/24 12:00:03 by nnasered         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,33 +14,18 @@
 
 char	*ft_strrchr(const char *s, int c)
 {
-	int	i;
+	char	ch;
+	char	*location;
 
-	i = 0;
-	while (s[i] != '\0')
-		i++;
-	if ((unsigned char)c == '\0')
-		return ((char *)&s[i]);
-	while (i >= 0)
+	ch = (char)c;
+	location = NULL;
+	while (*s)
 	{
-		if (s[i] == (unsigned char)c)
-			return ((char *)&s[i]);
-		i--;
+		if (*s == ch)
+			location = (char *)s;
+		s++;
 	}
-	return (0);
+	if (ch == '\0')
+		return ((char *)s);
+	return (location);
 }
-
-/*
-#include <stdio.h>
-
-int	main(void)
-{
-	char *s = "faronia";
-	int a = 'a';
-	int i = 'i';
-	int x = 'x';
-	printf("a in faronia : %s \n", ft_strrchr(s, a));
-	printf("i in faronia : %s \n", ft_strrchr(s, i));
-	printf("x in faronia : %s \n", ft_strrchr(s, x));
-	return (0);
-}*/

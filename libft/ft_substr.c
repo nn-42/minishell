@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nfaronia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: nnasered <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/20 11:57:54 by nfaronia          #+#    #+#             */
-/*   Updated: 2025/08/28 14:10:11 by nfaronia         ###   ########.fr       */
+/*   Created: 2025/08/15 10:23:59 by nnasered          #+#    #+#             */
+/*   Updated: 2025/08/24 13:02:31 by nnasered         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,38 +14,23 @@
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	char	*ptr;
-	size_t	i;
+	char	*sub;
 	size_t	s_len;
+	char	*original_sub;
 
-	if (!s)
-		return (0);
 	s_len = ft_strlen(s);
-	if (s_len < start)
+	if (start > s_len)
 		return (ft_strdup(""));
 	if (len > s_len - start)
 		len = s_len - start;
-	ptr = malloc(sizeof(char) * (len + 1));
-	if (!ptr)
-		return (0);
-	i = 0;
-	while (i < len)
+	sub = (char *)malloc(sizeof(char) * len + 1);
+	if (!sub)
+		return (NULL);
+	original_sub = sub;
+	while (len--)
 	{
-		ptr[i] = s[start + i];
-		i++;
+		*sub++ = s[start++];
 	}
-	ptr[i] = '\0';
-	return (ptr);
+	*sub = '\0';
+	return (original_sub);
 }
-
-/*
-#include <stdio.h>
-
-int	main(void)
-{
-	char const *s = "noor faronia";
-	unsigned int start = 5;
-	size_t len = ft_strlen(s);
-	printf("s = %s \n", ft_substr(s, start, len));
-	return (0);
-}*/

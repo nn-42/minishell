@@ -5,8 +5,18 @@ NAME = minishell
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
+# get_next_line
+GNL_DIR = src/get_next_line
+
+GNL_SRC = $(GNL_DIR)/get_next_line.c \
+          $(GNL_DIR)/get_next_line_utils.c
+
 # Sources
-SRC = 
+SRC =	src/main.c\
+	src/prompt.c\
+	src/history.c\
+	src/signals.c\
+	$(GNL_SRC)
 
 # Objects
 OBJS = $(SRC:.c=.o)
@@ -18,7 +28,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 READLINE = -lreadline
 
 # Includes
-INC = -Ilibft -Iinclude
+INC = -Ilibft -Iinclude -Isrc/get_next_line
 
 # Default rule
 all: $(LIBFT) $(NAME)
@@ -44,6 +54,7 @@ clean:
 fclean: clean
 	rm -f $(NAME)
 	$(MAKE) -C $(LIBFT_DIR) fclean
+	rm -f .minishell_history
 
 # Recompile
 re: fclean all

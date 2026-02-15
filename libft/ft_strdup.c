@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nfaronia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: nnasered <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/20 11:02:51 by nfaronia          #+#    #+#             */
-/*   Updated: 2025/08/28 13:05:32 by nfaronia         ###   ########.fr       */
+/*   Created: 2025/08/15 10:20:02 by nnasered          #+#    #+#             */
+/*   Updated: 2025/08/17 12:53:59 by nnasered         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,38 +14,12 @@
 
 char	*ft_strdup(const char *s)
 {
-	char	*ptr;
+	char	*dup;
 	size_t	len;
-	size_t	i;
 
-	len = ft_strlen(s);
-	ptr = (char *)malloc(len + 1);
-	if (!ptr)
-		return (0);
-	i = 0;
-	while (i < len)
-	{
-		ptr[i] = s[i];
-		i++;
-	}
-	ptr[i] = '\0';
-	return (ptr);
+	len = ft_strlen(s) + 1;
+	dup = (char *)malloc(len);
+	if (dup != NULL)
+		ft_memcpy(dup, s, len);
+	return (dup);
 }
-
-/*
-#include <stdio.h>
-
-int	main(void)
-{
-	const char *original = "Hello, World!";
-	char *copy;
-
-	copy = ft_strdup(original);
-	if (!copy)
-		return (1);
-
-	printf("copy : %s\n", copy);
-
-	free(copy);
-	return (0);
-}*/

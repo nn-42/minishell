@@ -1,35 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   printf_di.c                                        :+:      :+:    :+:   */
+/*   ft_lstdelone_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nnasered <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/16 12:39:08 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/01/11 12:33:52 by nfaronia         ###   ########.fr       */
+/*   Created: 2025/08/18 13:19:04 by nnasered          #+#    #+#             */
+/*   Updated: 2025/08/26 11:17:10 by nnasered         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	printf_di(int n)
+void	ft_lstdelone(t_list *lst, void (*del)(void *))
 {
-	int				count;
-	long			ln;
-	char			c;
-
-	ln = n;
-	count = 0;
-	if (ln < 0)
-	{
-		write(1, "-", 1);
-		ln = -ln;
-		count++;
-	}
-	if (ln >= 10)
-		count += printf_di(ln / 10);
-	c = (ln % 10) + '0';
-	write(1, &c, 1);
-	count++;
-	return (count);
+	if (!lst)
+		return ;
+	(*del)(lst->content);
+	free(lst);
 }

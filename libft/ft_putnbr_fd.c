@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nfaronia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: nnasered <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/30 12:21:19 by nfaronia          #+#    #+#             */
-/*   Updated: 2025/08/30 12:27:10 by nfaronia         ###   ########.fr       */
+/*   Created: 2025/08/17 11:00:39 by nnasered          #+#    #+#             */
+/*   Updated: 2025/08/26 13:04:22 by nnasered         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,26 @@
 
 void	ft_putnbr_fd(int n, int fd)
 {
-	char	c;
+	char	digits[10];
+	int		i;
 
 	if (n == -2147483648)
 	{
-		write (fd, "-2147483648", 11);
+		write(fd, "-2147483648", 11);
 		return ;
 	}
 	if (n < 0)
 	{
-		n = -n;
 		write(fd, "-", 1);
+		n = -n;
 	}
-	if (n >= 10)
-		ft_putnbr_fd(n / 10, fd);
-	c = (n % 10) + '0';
-	write(fd, &c, 1);
+	i = 9;
+	while (n > 9)
+	{
+		digits[i] = (n % 10) + '0';
+		n /= 10;
+		i--;
+	}
+	digits[i] = n + '0';
+	write(fd, &digits[i], (10 - i));
 }
-
-/*
-int main()
-{
-	ft_putnbr_fd(214, 1);
-	return (0);
-}*/

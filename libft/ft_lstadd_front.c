@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   printf_c.c                                         :+:      :+:    :+:   */
+/*   ft_lstadd_front_bonus.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nnasered <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/16 12:38:54 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/01/11 12:33:47 by nfaronia         ###   ########.fr       */
+/*   Created: 2025/08/18 08:09:09 by nnasered          #+#    #+#             */
+/*   Updated: 2025/08/26 11:05:33 by nnasered         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	printf_c(char c)
+void	ft_lstadd_front(t_list **lst, t_list *new)
 {
-	write(1, &c, 1);
-	return (1);
+	new->next = *lst;
+	*lst = new;
 }

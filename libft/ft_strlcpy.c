@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nfaronia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: nnasered <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/11 14:07:13 by nfaronia          #+#    #+#             */
-/*   Updated: 2025/08/28 11:09:14 by nfaronia         ###   ########.fr       */
+/*   Created: 2025/08/15 10:21:41 by nnasered          #+#    #+#             */
+/*   Updated: 2025/08/15 10:28:29 by nnasered         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,35 +15,15 @@
 size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 {
 	size_t	i;
-	size_t	j;
 
 	i = 0;
-	j = 0;
-	while (src[j] != '\0')
-		j++;
-	if (size > 0)
+	if (size == 0)
+		return (ft_strlen(src));
+	while (src[i] && i < size - 1)
 	{
-		while ((i < size - 1) && src[i] != '\0')
-		{
-			dst[i] = src[i];
-			i++;
-		}
-		dst[i] = '\0';
+		dst[i] = src[i];
+		i++;
 	}
-	return (j);
+	dst[i] = '\0';
+	return (ft_strlen(src));
 }
-
-/*
-#include <stdio.h>
-
-int	main(void)
-{
-	char dst[] = "noor faronia";
-	char src[] = "mahmoud";
-	printf("dst before ft_strlcpy = %s \n ", dst);
-	printf("src before ft_strlcpy = %s \n ", src);
-	ft_strlcpy(dst, src, 5);
-	printf("dst after ft_strlcpy = %s \n ", dst);
-	printf("src after ft_strlcpy = %s \n ", src);
-	return (0);
-}*/

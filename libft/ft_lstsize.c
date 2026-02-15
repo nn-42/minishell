@@ -1,28 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   printf_s.c                                         :+:      :+:    :+:   */
+/*   ft_lstsize_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nnasered <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/16 12:39:19 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/01/11 12:34:00 by nfaronia         ###   ########.fr       */
+/*   Created: 2025/08/18 08:12:24 by nnasered          #+#    #+#             */
+/*   Updated: 2025/08/18 12:03:30 by nnasered         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	printf_s(char *str)
+int	ft_lstsize(t_list *lst)
 {
-	int	count;
+	int	size;
 
-	if (!str)
-		str = "(null)";
-	count = 0;
-	while (str[count])
+	size = 0;
+	while (lst)
 	{
-		write(1, &str[count], 1);
-		count++;
+		size++;
+		lst = lst->next;
 	}
-	return (count);
+	return (size);
 }

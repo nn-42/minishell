@@ -14,11 +14,10 @@
 # define MINISHELL_H
 
 # include "libft.h"
+#include "get_next_line.h"
+
 # include <readline/readline.h>
 # include <readline/history.h>
-
-#include <readline/history.h>
-
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
@@ -32,6 +31,22 @@
 # include <termios.h>
 # include <curses.h>
 
+#define PROMPT "minishell$ "
+#define HISTORY_FILE ".minishell_history"
+#define MAX_HISTORY 1000
 
+extern volatile sig_atomic_t g_signal;
+
+/* prompt.c */
+char    *read_input(void);
+bool    is_empty_input(const char *input);
+
+/* history.c */
+void    init_history(void);
+void    add_to_history(const char *input);
+void    save_history(void);
+
+/* signals.c */
+void    setup_signals(void);
 
 #endif

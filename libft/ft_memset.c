@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nfaronia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: nnasered <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/11 13:22:36 by nfaronia          #+#    #+#             */
-/*   Updated: 2025/08/28 10:02:55 by nfaronia         ###   ########.fr       */
+/*   Created: 2025/08/15 10:18:54 by nnasered          #+#    #+#             */
+/*   Updated: 2025/08/15 10:38:58 by nnasered         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,12 @@
 
 void	*ft_memset(void *s, int c, size_t n)
 {
-	unsigned char	*p;
-	size_t			i;
+	unsigned char	*temp;
 
-	p = (unsigned char *)s;
-	i = 0;
-	while (i < n)
+	temp = (unsigned char *)s;
+	while (n--)
 	{
-		p[i] = (unsigned char)c;
-		i++;
+		*(temp++) = (unsigned char)c;
 	}
 	return (s);
 }
-
-/*
-#include <stdio.h>
-
-int	main(void)
-{
-	char s[] = "noor";
-	printf("befor memset : %s \n", s);
-	ft_memset(s, '2' , 2);
-	printf("after memset : %s \n", s);
-	return (0);
-}*/

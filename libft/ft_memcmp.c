@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nfaronia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: nnasered <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/11 14:24:04 by nfaronia          #+#    #+#             */
-/*   Updated: 2025/08/28 12:09:51 by nfaronia         ###   ########.fr       */
+/*   Created: 2025/08/15 10:17:55 by nnasered          #+#    #+#             */
+/*   Updated: 2025/08/15 10:17:58 by nnasered         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,19 @@
 
 int	ft_memcmp(const void *s1, const void *s2, size_t n)
 {
-	size_t				i;
-	const unsigned char	*fs;
-	const unsigned char	*ss;
+	const unsigned char	*p1;
+	const unsigned char	*p2;
 
-	fs = (const unsigned char *)s1;
-	ss = (const unsigned char *)s2;
-	i = 0;
-	while (i < n)
+	p1 = (const unsigned char *)s1;
+	p2 = (const unsigned char *)s2;
+	if (n == 0)
+		return (0);
+	while (n--)
 	{
-		if (fs[i] != ss[i])
-			return (fs[i] - ss[i]);
-		i++;
+		if (*p1 != *p2)
+			return (*p1 - *p2);
+		p1++;
+		p2++;
 	}
 	return (0);
 }
-
-/*
-#include <stdio.h>
-
-int	main(void)
-{
-	printf("%d", ft_memcmp("noor", "noOr", 3));
-	return (0);
-}*/

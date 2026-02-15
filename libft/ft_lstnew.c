@@ -1,27 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   printf_u.c                                         :+:      :+:    :+:   */
+/*   ft_lstnew_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nnasered <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/16 12:45:16 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/01/11 12:34:04 by nfaronia         ###   ########.fr       */
+/*   Created: 2025/08/18 08:07:35 by nnasered          #+#    #+#             */
+/*   Updated: 2025/08/26 11:01:53 by nnasered         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	printf_u(unsigned int n)
+t_list	*ft_lstnew(void *content)
 {
-	int				count;
-	char			c;
+	t_list	*new_node;
 
-	count = 0;
-	if (n >= 10)
-		count += printf_u(n / 10);
-	c = (n % 10) + '0';
-	write(1, &c, 1);
-	count++;
-	return (count);
+	new_node = (t_list *)malloc(sizeof(t_list));
+	if (!new_node)
+		return (NULL);
+	new_node->content = content;
+	new_node->next = NULL;
+	return (new_node);
 }

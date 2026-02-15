@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strmapi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nfaronia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: nnasered <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/30 11:36:07 by nfaronia          #+#    #+#             */
-/*   Updated: 2025/08/30 11:36:36 by nfaronia         ###   ########.fr       */
+/*   Created: 2025/08/17 10:59:32 by nnasered          #+#    #+#             */
+/*   Updated: 2025/08/26 10:49:32 by nnasered         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,49 +14,18 @@
 
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 {
-	char			*ptr;
-	unsigned int	i;
-	size_t			len;
+	char	*result;
+	size_t	i;
 
-	if (!s || !f)
-		return (0);
-	len = ft_strlen(s);
-	ptr = malloc(sizeof(char) * (len + 1));
-	if (!ptr)
-		return (0);
+	result = (char *)malloc(sizeof(char) * (ft_strlen(s) + 1));
+	if (!result)
+		return (NULL);
 	i = 0;
-	while (i < len)
+	while (s[i])
 	{
-		ptr[i] = (*f)(i, s[i]);
+		result[i] = (*f)(i, s[i]);
 		i++;
 	}
-	ptr[i] = '\0';
-	return (ptr);
+	result[i] = '\0';
+	return (result);
 }
-
-/*
-#include <stdio.h>
-
-char	pls(unsigned int i, char c)
-{
-	//(void)i;
-	c = c + 1;
-	return (c);
-}
-
-int	main(void)
-{
-	char *str = "hello!";
-	char *result = ft_strmapi(str, pls);
-
-	if (result)
-	{
-		printf("Original: %s\n", str);
-		printf("Modified: %s\n", result);
-		free(result);
-	}
-	else
-		printf("Memory allocation failed.\n");
-
-	return (0);
-}*/
