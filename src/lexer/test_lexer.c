@@ -6,7 +6,7 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/15 22:02:22 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/02/16 00:50:07 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/02/16 18:22:55 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,10 @@ void	print_tokens(t_token *tokens)
 			name = "TOKEN_APPEND";
 		else if (tokens->type == TOKEN_HEREDOC)
 			name = "TOKEN_HEREDOC";
+		else if (tokens->type == TOKEN_EOF)
+			name = "EOF";
 		else
 			name = "UNKNOWN";
-			
 		printf("[%s:%s] ", name, tokens->value);
 		tokens = tokens->next;
 	}

@@ -6,7 +6,7 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/14 12:49:05 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/02/16 01:13:12 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/02/16 18:17:28 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,33 +53,30 @@ void	operator(char *line, int *i, t_token **tokens)
 		aort(line, i, tokens);
 }
 
-void	word(char *line, int *i, t_token **tokens)
+int	word(char *line, int *i, t_token **tokens)
 {
 	int		start;
 	char	*tokens_word;
-	char	quote;
 
 	if (line[*i] == '\'' || line[*i] == '"')
 	{
-		quote = line[*i];
-		(*i)++;
-		start = *i;
-		while (line[*i] && line[*i] != quote)
-			(*i)++;
-		tokens_word = ft_substr(line, start, *i - start);
-		if (line[*i] == quote)
-			(*i)++;
+		if (!quote(&tokens_word, line, i))
+			return (0);
 	}
 	else
 	{
 		start = *i;
 		while (line[*i] && line[*i] != ' ' && line[*i] != '|'
-			&& line[*i] != '<' && line[*i] != '>')
+			&& line[*i] != '\t' && line[*i] != '<' && line[*i] != '>'
+			&& line[*i] != '\'' && line[*i] != '"')
 			(*i)++;
 		tokens_word = ft_substr(line, start, *i - start);
+		if (!tokens_word)
+			return (0);
 	}
 	add_token(tokens, TOKEN_WORD, tokens_word);
 	free(tokens_word);
+	return (1);
 }
 
 t_token	*lexer(char *line)
@@ -91,14 +88,21 @@ t_token	*lexer(char *line)
 	i = 0;
 	while (line[i])
 	{
-		while (line[i] == ' ')
+		while (line[i] == ' ' || line[i] == '\t')
 			i++;
 		if (!line[i])
 			break ;
-		if (line[i] == '|' || line[i] == '<' || line[i] == '>')
+		else if (line[i] == '|' || line[i] == '<' || line[i] == '>')
 			operator(line, &i, &tokens);
 		else
-			word(line, &i, &tokens);
+		{
+			if (!word(line, &i, &tokens))
+			{
+				free_tokens(tokens);
+				return (NULL);
+			}
+		}
 	}
+	add_token(&tokens, TOKEN_EOF, NULL);
 	return (tokens);
 }

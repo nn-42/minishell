@@ -26,6 +26,10 @@
     - [Tokens in C](https://www.geeksforgeeks.org/c/tokens-in-c/)
     - [Lexical Analyser in C](https://www.geeksforgeeks.org/c/c-lexical-analyser-lexer/)
 
+- Parser
+    - [Parsing - Introduction to Parsers](https://www.geeksforgeeks.org/compiler-design/introduction-of-parsing-ambiguity-and-parsers-set-1/)
+    - 
+
 
 
 ### 🤖 AI Usage

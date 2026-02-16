@@ -6,7 +6,7 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
 # Sources
-SRC = src/minishell.c src/signals.c src/lexer/lexer.c src/lexer/test_lexer.c src/lexer/utils_lexer.c
+SRC = src/minishell.c src/signals.c src/lexer/lexer.c src/lexer/test_lexer.c src/lexer/utils_lexer.c src/parser/parser.c src/parser/futils_parser.c src/parser/sutils_parser.c src/parser/test_parser.c
 
 # Objects
 OBJS = $(SRC:.c=.o)
