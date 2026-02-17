@@ -16,8 +16,9 @@ int	main(void)
 {
 	char	*input;
 
+	rl_catch_signals = 0;
 	init_history();
-	setup_signals();
+	signals();
 	while (1)
 	{
 		input = read_input();
