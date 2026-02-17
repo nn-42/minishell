@@ -32,12 +32,25 @@
 # include <curses.h>
 # include <signal.h>
 
+# define PROMPT "minishell$ "
+# define HISTORY_FILE ".minishell_history"
+# define MAX_HISTORY 1000
+
 extern int	g_signal;
 
 // signals
 void	handler_cntrc(int sig);
 void	handler_backslash(int sig);
 void	signals(void);
+
+/* prompt.c */
+char	*read_input(void);
+bool	is_empty_input(const char *input);
+
+/* history.c */
+void	init_history(void);
+void	add_to_history(const char *input);
+void	save_history(void);
 
 // lexer
 typedef enum e_token_type
