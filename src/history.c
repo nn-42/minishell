@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   history.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nnasered <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/02/17 08:48:45 by nnasered          #+#    #+#             */
+/*   Updated: 2026/02/17 08:48:47 by nnasered         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static t_list	*g_history = NULL;
@@ -18,7 +30,7 @@ static void	pop_oldest_history(void)
 void	add_to_history(const char *input)
 {
 	t_list	*new;
-	t_list  *tmp;
+	t_list	*tmp;
 
 	if (!input || is_empty_input(input))
 		return ;

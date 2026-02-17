@@ -13,40 +13,39 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include "get_next_line.h"
 # include "libft.h"
-#include "get_next_line.h"
-
-# include <readline/readline.h>
+# include <curses.h>
+# include <dirent.h>
+# include <fcntl.h>
 # include <readline/history.h>
+# include <readline/readline.h>
+# include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <unistd.h>
-# include <fcntl.h>
-# include <sys/stat.h>
-# include <sys/wait.h>
-# include <signal.h>
-# include <dirent.h>
 # include <string.h>
 # include <sys/ioctl.h>
+# include <sys/stat.h>
+# include <sys/wait.h>
 # include <termios.h>
-# include <curses.h>
+# include <unistd.h>
 
-#define PROMPT "minishell$ "
-#define HISTORY_FILE ".minishell_history"
-#define MAX_HISTORY 1000
+# define PROMPT "minishell$ "
+# define HISTORY_FILE ".minishell_history"
+# define MAX_HISTORY 1000
 
-extern volatile sig_atomic_t g_signal;
+extern volatile sig_atomic_t	g_signal;
 
 /* prompt.c */
-char    *read_input(void);
-bool    is_empty_input(const char *input);
+char							*read_input(void);
+bool							is_empty_input(const char *input);
 
 /* history.c */
-void    init_history(void);
-void    add_to_history(const char *input);
-void    save_history(void);
+void							init_history(void);
+void							add_to_history(const char *input);
+void							save_history(void);
 
 /* signals.c */
-void    setup_signals(void);
+void							setup_signals(void);
 
 #endif

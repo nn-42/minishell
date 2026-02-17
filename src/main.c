@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nnasered <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/02/17 08:48:58 by nnasered          #+#    #+#             */
+/*   Updated: 2026/02/17 08:49:00 by nnasered         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	main(void)
@@ -6,14 +18,13 @@ int	main(void)
 
 	init_history();
 	setup_signals();
-
 	while (1)
 	{
 		input = read_input();
 		if (!input)
 		{
 			printf("exit\n");
-			break;
+			break ;
 		}
 		if (is_empty_input(input))
 		{

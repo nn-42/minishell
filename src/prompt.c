@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   prompt.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nnasered <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/02/17 08:49:05 by nnasered          #+#    #+#             */
+/*   Updated: 2026/02/17 08:49:06 by nnasered         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 bool	is_empty_input(const char *input)
@@ -17,7 +29,7 @@ bool	is_empty_input(const char *input)
 }
 
 static char	*get_prompt(void)
-{	
+{
 	if (isatty(STDIN_FILENO))
 	{
 		return ("minishell$ ");
