@@ -16,11 +16,10 @@ int	g_signal = 0;
 
 void	handler_cntrc(int sig)
 {
-	(void)sig;
-	g_signal = SIGINT;
+	g_signal = sig;
 	write(1, "\n", 1);
-	rl_replace_line("", 0);
 	rl_on_new_line();
+	rl_replace_line("", 0);
 	rl_redisplay();
 }
 
@@ -37,6 +36,8 @@ void	signals(void)
 	sa.sa_flags = 0;
 	sa.sa_handler = handler_cntrc;
 	sigaction(SIGINT, &sa, NULL);
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
 	sa.sa_handler = handler_backslash;
 	sigaction(SIGQUIT, &sa, NULL);
 }
