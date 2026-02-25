@@ -6,98 +6,93 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 19:58:17 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/02/17 00:49:05 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/02/25 15:44:09 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_cmd	*new_cmd(void)
+t_ast	*parse_pipe(t_parser *pars)
 {
-	t_cmd	*cmd;
+	t_ast		*left;
+	t_ast		*right;
 
-	cmd = malloc(sizeof(t_cmd));
-	if (!cmd)
+	left = parse_cmd(pars);
+	if (!left)
 		return (NULL);
-	cmd->args = NULL;
-	cmd->redirections = NULL;
-	cmd->next = NULL;
-	return (cmd);
-}
-
-t_token	*handle_word(t_cmd	*cmd_curr, t_token	*tok)
-{
-	cmd_curr->args = add_args(cmd_curr->args, tok->value);
-	return (tok->next);
-}
-
-t_token	*handle_redirection(t_cmd	*cmd_curr, t_token	*tok)
-{
-	t_token_type	r_type;
-
-	r_type = tok->type;
-	tok = tok->next;
-	if (!tok || tok->type != TOKEN_WORD)
+	while (is_match(pars, TOKEN_PIPE))
 	{
-		printf("syntax error: redirection without file\n");
-		return (NULL);
-	}
-	cmd_curr->redirections = add_redirections(cmd_curr->redirections,
-			r_type, tok->value);
-	return (tok->next);
-}
-
-t_token	*handle_pipe(t_cmd **cmd_curr, t_token *tok)
-{
-	t_cmd	*new;
-
-	if (!(*cmd_curr)->args)
-	{
-		printf("syntax error: empty command before pipe\n");
-		return (NULL);
-	}
-	new = new_cmd();
-	if (!new)
-		return (NULL);
-	(*cmd_curr)->next = new;
-	*cmd_curr = new;
-	return (tok->next);
-}
-
-t_cmd	*parse_tokens(t_token *tokens)
-{
-	t_cmd	*cmd_head;
-	t_cmd	*cmd_curr;
-	t_token	*tok;
-
-	cmd_head = NULL;
-	cmd_curr = NULL;
-	tok = tokens;
-	while (tok && tok->type != TOKEN_EOF)
-	{
-		if (!cmd_curr)
+		if (!pars->current || pars->current->type == TOKEN_PIPE)
 		{
-			cmd_curr = new_cmd();
-			if (!cmd_curr)
-				return (NULL);
-			cmd_head = cmd_curr;
-		}
-		if (tok->type == TOKEN_WORD)
-			tok = handle_word(cmd_curr, tok);
-		else if (tok->type == TOKEN_REDIR_IN || tok->type == TOKEN_REDIR_OUT
-			|| tok->type == TOKEN_APPEND || tok->type == TOKEN_HEREDOC)
-			tok = handle_redirection(cmd_curr, tok);
-		else if (tok->type == TOKEN_PIPE)
-			tok = handle_pipe(&cmd_curr, tok);
-		else
-			tok = tok->next;
-		if (!tok)
+			free_ast(left);
 			return (NULL);
+		}
+		right = parse_cmd(pars);
+		if (!right)
+		{
+			free_ast(left);
+			return (NULL);
+		}
+		left = pipe_node(left, right);
 	}
-	if (cmd_curr && !cmd_curr->args)
+	return (left);
+}
+
+bool	pars_type(t_parser *pars)
+{
+	if (pars->current->type == TOKEN_REDIR_IN
+		|| pars->current->type == TOKEN_REDIR_OUT
+		|| pars->current->type == TOKEN_APPEND
+		|| pars->current->type == TOKEN_HEREDOC)
+		return (1);
+	return (0);
+}
+
+t_ast	*parse_cmd(t_parser *pars)
+{
+	t_ast	*node;
+
+	node = creat_node();
+	while (pars->current && pars->current->type != TOKEN_PIPE
+		&& pars->current->type != TOKEN_EOF && !pars->error)
 	{
-		printf("syntax error: empty command\n");
+		if (pars->current->type == TOKEN_WORD)
+			add_arg(node, pars);
+		else if (pars_type(pars))
+			add_redir(node, pars);
+		else
+			break ;
+	}
+	if (pars->error)
+	{
+		free_ast(node);
 		return (NULL);
 	}
-	return (cmd_head);
+	if (!node->args && !node->redirs)
+	{
+		free(node);
+		return (NULL);
+	}
+	return (node);
+}
+
+t_ast	*parser(t_token *tokens)
+{
+	t_parser	pars;
+	t_ast		*tree;
+
+	pars.current = tokens;
+	pars.error = 0;
+	tree = parse_pipe(&pars);
+	if (!tree)
+		return (NULL);
+	if (pars.error)
+		return (NULL);
+	if (!pars.error && pars.current && pars.current->type != TOKEN_EOF)
+	{
+		printf("syntax error\n");
+		free_ast(tree);
+		return (NULL);
+	}
+	return (tree);
 }
