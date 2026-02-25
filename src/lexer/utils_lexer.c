@@ -6,7 +6,7 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 00:04:14 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/02/16 20:44:27 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/02/25 15:22:00 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,8 @@ void	free_tokens(t_token *tokens)
 	{
 		tmp = tokens;
 		tokens = tokens->next;
-		free(tmp->value);
+		if (tmp->value)
+			free(tmp->value);
 		free(tmp);
 	}
 }

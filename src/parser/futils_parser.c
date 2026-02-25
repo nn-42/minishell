@@ -6,77 +6,67 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 19:57:47 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/02/16 23:49:55 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/02/25 15:25:57 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	is_null_parser(char *file, t_redir *redir)
+bool	is_match(t_parser *pars, t_token_type type)
 {
-	if (file)
-		redir->file = ft_strdup(file);
-	else
-		redir->file = NULL;
+	if (pars->current && pars->current->type == type)
+	{
+		adv(pars);
+		return (1);
+	}
+	return (0);
 }
 
-t_redir	*add_redirections(t_redir *redirections, t_token_type type, char *file)
+void	adv(t_parser *pars)
 {
-	t_redir	*redir;
-	t_redir	*current;
-
-	redir = malloc(sizeof(t_redir));
-	if (!redir)
-		return (NULL);
-	redir->type = type;
-	is_null_parser(file, redir);
-	if (file && !redir->file)
-	{
-		free(redir);
-		return (NULL);
-	}
-	redir->next = NULL;
-	if (!redirections)
-		return (redir);
-	current = redirections;
-	while (current->next)
-		current = current->next;
-	current->next = redir;
-	return (redirections);
+	if (pars->current)
+		pars->current = pars->current->next;
 }
 
-int	copy_args(char **new_args, char **args, int i)
+t_ast	*creat_node(void)
 {
-	int	j;
+	t_ast	*node;
 
-	j = 0;
-	while (j < i)
-	{
-		new_args[j] = args[j];
-		j++;
-	}
-	return (j);
+	node = malloc(sizeof(t_ast));
+	if (!node)
+		return (NULL);
+	node->type = NODE_CMD;
+	node->left = NULL;
+	node->right = NULL;
+	node->args = NULL;
+	node->redirs = NULL;
+	return (node);
 }
 
-char	**add_args(char **args, char *word)
+t_ast	*pipe_node(t_ast *left, t_ast *right)
 {
-	int		i;
-	char	**new_args;
+	t_ast	*node;
 
-	i = 0;
-	while (args && args[i])
-		i++;
-	new_args = malloc(sizeof(char *) * (i + 2));
-	if (!new_args)
+	node = malloc(sizeof(t_ast));
+	if (!node)
 		return (NULL);
-	copy_args(new_args, args, i);
-	new_args[i] = ft_strdup(word);
-	if (!new_args[i])
-	{
-		free(new_args);
-		return (NULL);
-	}
-	new_args[i + 1] = NULL;
-	free(args);
-	return (new_args);
+	node->type = NUDE_PIPE;
+	node->left = left;
+	node->right = right;
+	node->args = NULL;
+	node->redirs = NULL;
+	return (node);
+}
+
+void	free_ast(t_ast *node)
+{
+	if (!node)
+		return ;
+	free_ast(node->left);
+	free_ast(node->right);
+	if (node->args)
+		free_arg(node->args);
+	if (node->redirs)
+		free_redir(node->redirs);
+	free(node);
 }
