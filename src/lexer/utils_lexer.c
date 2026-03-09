@@ -6,11 +6,16 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 00:04:14 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/02/25 15:22:00 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/03/08 23:59:25 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	lexer_error(char *msg)
+{
+	fprintf(stderr, "Lexer Error: %s\n", msg);
+}
 
 void	is_null_lexer(char *value, t_token	*token)
 {
@@ -74,7 +79,7 @@ int	quote(char **tokens_word, char *line, int *i)
 		(*i)++;
 	if (!line[*i])
 	{
-		printf("syntax error: unclosed quote");
+		lexer_error("syntax error: unclosed quote");
 		*tokens_word = NULL;
 		return (0);
 	}
@@ -82,7 +87,7 @@ int	quote(char **tokens_word, char *line, int *i)
 	*tokens_word = ft_substr(line, start, *i - start);
 	if (!*tokens_word)
 	{
-		printf("malloc error\n");
+		lexer_error("malloc error");
 		return (0);
 	}
 	return (1);

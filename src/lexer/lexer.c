@@ -6,7 +6,7 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/14 12:49:05 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/02/16 18:17:28 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/03/07 12:50:58 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,8 @@ int	word(char *line, int *i, t_token **tokens)
 	{
 		start = *i;
 		while (line[*i] && line[*i] != ' ' && line[*i] != '|'
-			&& line[*i] != '\t' && line[*i] != '<' && line[*i] != '>'
+			&& line[*i] != '\t' && line[*i] != '\n'
+			&& line[*i] != '<' && line[*i] != '>'
 			&& line[*i] != '\'' && line[*i] != '"')
 			(*i)++;
 		tokens_word = ft_substr(line, start, *i - start);
@@ -98,6 +99,7 @@ t_token	*lexer(char *line)
 		{
 			if (!word(line, &i, &tokens))
 			{
+				lexer_error("failed to parse word");
 				free_tokens(tokens);
 				return (NULL);
 			}

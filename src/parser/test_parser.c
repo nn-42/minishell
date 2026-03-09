@@ -6,15 +6,15 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 20:05:49 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/02/25 13:07:22 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/03/07 14:16:28 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-#define COLOR_CMD    "\033[1;32m" // أخضر
-#define COLOR_PIPE   "\033[1;33m" // أصفر
-#define COLOR_REDIR  "\033[1;34m" // أزرق
+#define COLOR_CMD    "\033[1;32m"
+#define COLOR_PIPE   "\033[1;33m"
+#define COLOR_REDIR  "\033[1;34m"
 #define COLOR_RESET  "\033[0m"
 
 static void print_node_prefix(int level, bool last, bool *levels)
@@ -62,7 +62,7 @@ void print_ast(t_ast *node, int level, bool *levels)
     bool last = true; // افتراض أن العقدة الأخيرة في هذا الفرع
     print_node_prefix(level, last, levels);
 
-    if (node->type == NUDE_PIPE)
+    if (node->type == NODE_PIPE)
     {
         printf(COLOR_PIPE "PIPE\n" COLOR_RESET);
 

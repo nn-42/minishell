@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sutils_parser.c                                    :+:      :+:    :+:   */
+/*   utils_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 21:43:04 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/02/25 15:40:12 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/03/07 14:15:18 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ void	add_redir(t_ast *node, t_parser	*pars)
 	t_token_type	type;
 
 	type = pars->current->type;
-	adv(pars);
+	next_token(pars);
 	if (!pars->current || pars->current->type != TOKEN_WORD)
 	{
-		printf("syntax error near redirection\n");
+		parse_error("syntax error near redirection");
 		pars->error = 1;
 		return ;
 	}
@@ -35,7 +35,7 @@ void	add_redir(t_ast *node, t_parser	*pars)
 	redir->filename = ft_strdup(pars->current->value);
 	redir->next = node->redirs;
 	node->redirs = redir;
-	adv(pars);
+	next_token(pars);
 }
 
 void	free_redir(t_redir *redir)
@@ -87,7 +87,7 @@ void	add_arg(t_ast *node, t_parser	*pars)
 		return ;
 	}
 	expand_args_array(&node->args, s);
-	adv(pars);
+	next_token(pars);
 }
 
 void	free_arg(char **arg)

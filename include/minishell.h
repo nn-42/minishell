@@ -6,7 +6,7 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/03 12:30:29 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/02/25 16:42:57 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/03/09 07:57:22 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ void	operator(char *line, int *i, t_token **tokens);
 int		word(char *line, int *i, t_token **tokens);
 
 // utils_lexer.c
+void	lexer_error(char *msg);
 void	is_null_lexer(char *value, t_token	*token);
 int		add_token(t_token	**tokens, t_token_type type, char *value);
 void	free_tokens(t_token *tokens);
@@ -91,7 +92,7 @@ void	print_tokens(t_token *tokens);
 typedef enum e_node_type
 {
 	NODE_CMD,
-	NUDE_PIPE
+	NODE_PIPE
 }	t_node_type;
 
 typedef struct s_redir
@@ -116,20 +117,23 @@ typedef struct s_parser
 	int		error;
 }	t_parser;
 
-//parser.c
-t_ast	*parse_pipe(t_parser *pars);
-bool	pars_type(t_parser *pars);
-t_ast	*parse_cmd(t_parser *pars);
+// parser.c
+void	parse_error(char *msg);
+void	free_ast(t_ast *node);
 t_ast	*parser(t_token *tokens);
 
-//first_utis_parser.c
-bool	is_match(t_parser *pars, t_token_type type);
-void	adv(t_parser *pars);
-t_ast	*creat_node(void);
+// parse_pipe.c
 t_ast	*pipe_node(t_ast *left, t_ast *right);
-void	free_ast(t_ast *node);
+bool	match_token(t_parser *pars, t_token_type type);
+t_ast	*parse_pipe(t_parser *pars);
 
-//second_utils_parser.c
+// parse_cmd.c
+t_ast	*cmd_node(void);
+bool	pars_type(t_parser *pars);
+void	next_token(t_parser *pars);
+t_ast	*parse_cmd(t_parser *pars);
+
+//utils_cmd.c
 void	add_redir(t_ast *node, t_parser	*pars);
 void	free_redir(t_redir *redir);
 void	expand_args_array(char ***arr, char *str);
@@ -138,5 +142,35 @@ void	free_arg(char **arg);
 
 //test_parser
 void	print_ast(t_ast *node, int level, bool *levels);
+
+// EXECUTOR
+typedef struct s_exec
+{
+	char	**envp;
+	int		last_exit;
+}	t_exec;
+
+// expander
+void	expander_error(char *msg);
+char	*expander_all(char *str, t_exec *env);
+int		expander_args(char **args, t_exec *env);
+int		expander_redirs(t_redir *redir, t_exec *env);
+int		expander(t_ast *node, t_exec *env);
+
+// expander_quotes.c
+void	single_quote(char **new_str, char *str, int *i);
+void	double_quote(char **new_str, char *str, int *i);
+char	*rest_char(char *new_str, char c);
+char	*expander_quotes(char *str);
+
+// expander_variables.c
+char	*get_env_value(t_exec *env, char *var_name);
+char	*var(char *str, int *i, t_exec *env);
+char	*expander_variables(char *str, t_exec *env);
+
+//built_in
+int		built_cd(char **args);
+int		built_echo(char **args);
+int		built_pwd(void);
 
 #endif

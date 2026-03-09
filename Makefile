@@ -18,9 +18,16 @@ SRC =	src/main/main.c\
 	src/signals/signals.c\
 	src/lexer/lexer.c\
 	src/lexer/utils_lexer.c\
-	src/parser/futils_parser.c\
 	src/parser/parser.c\
-	src/parser/sutils_parser.c\
+	src/parser/parse_pipe.c\
+	src/parser/parse_cmd.c\
+	src/parser/utils_cmd.c\
+	src/expander/expander_quotes.c\
+	src/expander/expander_variables.c\
+	src/expander/expander.c\
+	src/built_ins/cd.c\
+	src/built_ins/pwd.c\
+	src/built_ins/echo.c\
 	src/parser/test_parser.c\
 	src/lexer/test_lexer.c\
 	$(GNL_SRC)
