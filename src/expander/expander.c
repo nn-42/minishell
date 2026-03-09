@@ -6,7 +6,7 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 18:18:22 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/03/09 06:47:34 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/03/09 08:41:51 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,41 +98,3 @@ int	expander(t_ast *node, t_exec *env)
 		return (1);
 	return (0);
 }
-
-/*
-char	*expand_arg(char *arg, t_exec *exec)
-{
-	char	*tmp;
-	char	*new;
-
-	tmp = expander_quotes(arg);
-	new = expander_variables(tmp, exec);
-	free(tmp);
-	return (new);
-}
-
-void	expand_command(t_ast *cmd, t_exec *exec)
-{
-	int		i;
-	t_redir	*r;
-	char	*new_file;
-	char	*new_arg;
-
-	i = 0;
-	while (cmd->args && cmd->args[i])
-	{
-		new_arg = expand_arg(cmd->args[i], exec);
-		free(cmd->args[i]);
-		cmd->args[i] = new_arg;
-		i++;
-	}
-	r = cmd->redirs;
-	while (r)
-	{
-		new_file = expand_arg(r->filename, exec);
-		free(r->filename);
-		r->filename = new_file;
-		r = r->next;
-	}
-}
-*/
