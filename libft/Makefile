@@ -12,7 +12,8 @@ SRC =	ft_atoi.c     ft_isprint.c  ft_putchar_fd.c  ft_striteri.c  ft_strnstr.c\
 	ft_isascii.c  ft_memmove.c  ft_strchr.c      ft_strmapi.c   ft_toupper.c\
 	ft_isdigit.c  ft_memset.c   ft_strdup.c      ft_strncmp.c   ft_lstnew.c\
 	ft_lstadd_front.c	    ft_lstsize.c     ft_lstlast.c   ft_lstadd_back.c\
-	ft_lstdelone.c 		    ft_lstclear.c    ft_lstiter.c   ft_lstmap.c
+	ft_lstdelone.c 		    ft_lstclear.c    ft_lstiter.c   ft_lstmap.c\
+	ft_strcmp.c
 
 OBJ = $(SRC:.c=.o)
 
