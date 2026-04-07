@@ -6,7 +6,7 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 05:07:26 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/03/31 05:39:02 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/04/07 07:10:58 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	print_export_format(char **envp)
 	while (envp[i])
 	{
 		equals = ft_strchr(envp[i], '=');
-
 		if (equals)
 		{
 			name = ft_substr(envp[i], 0, equals - envp[i]);
@@ -71,7 +70,6 @@ char	**dup_env(char **envp)
 		i++;
 	}
 	new_env[count] = NULL;
-
 	return (new_env);
 }
 

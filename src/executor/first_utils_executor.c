@@ -6,13 +6,12 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 06:03:35 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/03/31 14:09:36 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/04/07 07:11:48 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parser.h"
-
 
 int	is_executable(char *path)
 {

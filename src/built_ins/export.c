@@ -6,7 +6,7 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 05:07:26 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/03/31 05:31:29 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/04/07 07:11:12 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,5 @@ int	builtin_export(char **args, t_exec *exec_ctx)
 			return (1);
 		i++;
 	}
-
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 01:46:08 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/04/04 17:36:29 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/04/07 07:13:36 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,5 @@ void	free_arg(char **arg);
 t_cmd	*create_cmd_from_ast(t_ast *node);
 t_cmd	*ast_to_cmd_list(t_ast *node);
 void	free_cmd_list(t_cmd *cmd);
-
-//test_parser
-void	print_ast(t_ast *node, int level, bool *levels);
 
 #endif

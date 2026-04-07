@@ -41,8 +41,6 @@ SRC =	src/main/main.c\
 	src/built_ins/second_utils_export.c\
 	src/built_ins/pwd.c\
 	src/built_ins/unset.c\
-	src/parser/test_parser.c\
-	src/lexer/test_lexer.c\
 	$(GNL_SRC)
 
 # Objects

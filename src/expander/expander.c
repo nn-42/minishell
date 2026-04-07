@@ -6,7 +6,7 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 18:18:22 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/04/07 02:28:45 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/04/07 08:18:44 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@ char	*expander_all(char *str, t_exec *env)
 	quotes = expander_quotes(str);
 	if (!quotes)
 		return (NULL);
-	if (ft_strchr(str, '\''))
-		return (quotes);
 	var = expander_variables(quotes, env);
 	free (quotes);
 	if (!var)

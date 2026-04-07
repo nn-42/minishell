@@ -1,12 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/07 07:21:15 by nfaronia          #+#    #+#             */
+/*   Updated: 2026/04/07 07:22:28 by nfaronia         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-int main(int argc, char **argv, char **envp)
+int	main(int argc, char **argv, char **envp)
 {
-    t_exec exec_ctx;
-    char   *input;
-    t_token *tokens;
-    t_ast   *ast;
-    t_cmd   *cmd_list;
+	t_exec	exec_ctx;
+	char	*input;
+	t_token	*tokens;
+	t_ast	*ast;
+	t_cmd	*cmd_list;
 
     (void)argc;
     (void)argv;

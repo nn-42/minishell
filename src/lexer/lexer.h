@@ -6,7 +6,7 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 01:44:00 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/03/28 01:47:45 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/04/07 07:13:48 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,5 @@ void	is_null_lexer(char *value, t_token	*token);
 int		add_token(t_token	**tokens, t_token_type type, char *value);
 void	free_tokens(t_token *tokens);
 int		quote(char **tokens_word, char *line, int *i);
-
-// test_lexer.c
-void	print_tokens(t_token *tokens);
 
 #endif
