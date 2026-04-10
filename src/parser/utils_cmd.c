@@ -6,7 +6,7 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 21:43:04 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/04/04 18:02:40 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/04/09 00:49:37 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ void	add_redir(t_ast *node, t_parser	*pars)
 	}
 	redir->type = type;
 	redir->filename = ft_strdup(pars->current->value);
+	redir->heredoc_pipe = -1;
+	redir->quoted = 0;
 	redir->next = node->redirs;
 	node->redirs = redir;
 	next_token(pars);

@@ -6,7 +6,7 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 18:18:22 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/04/07 00:38:55 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/04/09 02:57:59 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,13 @@ char	*var(char *str, int *i, t_exec *env)
 		(*i) += 2;
 		return (ft_itoa(env->last_exit));
 	}
+
+    if (!str[*i + 1] || (!ft_isalnum(str[*i + 1]) && str[*i + 1] != '_'))
+    {
+        (*i)++;
+        return ft_strdup("$");
+    }
+
 	start = ++(*i);
 	while (str[*i] && (ft_isalnum(str[*i]) || str[*i] == '_'))
 		(*i)++;

@@ -6,7 +6,7 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 05:53:40 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/03/31 05:54:50 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/04/09 03:17:08 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,12 @@ int	builtin_exit(char **args, t_exec *exec_ctx)
 	}
 	if (args[2])
 	{
-		printf("minishell: exit: too many arguments\n");
+		fprintf(stderr, "minishell: exit: too many arguments\n");
 		return (1);
 	}
 	if (!is_num(args[1]))
 	{
-		printf("minishell: exit: %s: numeric argument required\n", args[1]);
+		fprintf(stderr, "minishell: exit: %s: numeric argument required\n", args[1]);
 		cleanup_shell();
 		exit(2);
 	}

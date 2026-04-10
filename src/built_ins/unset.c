@@ -6,7 +6,7 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 05:41:37 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/03/31 05:49:04 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/04/09 02:51:16 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,6 @@ int	builtin_unset(char **args, t_exec *exec_ctx)
 {
 	int	i;
 
-	if (!args[1])
-	{
-		printf("unset: not enough arguments\n");
-		return (1);
-	}
 	i = 1;
 	while (args[i])
 	{

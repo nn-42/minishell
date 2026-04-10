@@ -6,7 +6,7 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 05:07:26 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/04/07 07:11:12 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/04/09 03:04:53 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,64 @@ int	parse_export_arg(char *arg, char **name, char **value)
 	return (1);
 }
 
+//////////////////////
+int is_valid_identifier(char *name)
+{
+    int i = 0;
+
+    if (!name || (!ft_isalpha(name[0]) && name[0] != '_'))
+        return 0;
+    i = 1;
+    while (name[i])
+    {
+        if (!ft_isalnum(name[i]) && name[i] != '_')
+            return 0;
+        i++;
+    }
+    return 1;
+}
+int export_arg(char *arg, t_exec *exec_ctx)
+{
+    char *name;
+    char *value;
+
+    if (parse_export_arg(arg, &name, &value))
+    {
+        if (!is_valid_identifier(name))
+        {
+            fprintf(stderr, "export: `%s': not a valid identifier\n", arg);
+            free(name);
+            free(value);
+            return 1;
+        }
+        if (set_env_var(&exec_ctx->envp, name, value) < 0)
+        {
+            fprintf(stderr, "export: failed to set %s\n", name);
+            free(name);
+            free(value);
+            return 1;
+        }
+        free(name);
+        free(value);
+    }
+    else
+    {
+        if (!is_valid_identifier(arg))
+        {
+            fprintf(stderr, "export: `%s': not a valid identifier\n", arg);
+            return 1;
+        }
+        if (set_env_var(&exec_ctx->envp, arg, "") < 0)
+        {
+            fprintf(stderr, "export: failed to set %s\n", arg);
+            return 1;
+        }
+    }
+    return 0;
+}
+
+//////////////////////
+/*
 int	export_arg(char *arg, t_exec *exec_ctx)
 {
 	char	*name;
@@ -88,7 +146,7 @@ int	export_arg(char *arg, t_exec *exec_ctx)
 		printf("export: `%s': not a valid identifier\n", arg);
 	}
 	return (0);
-}
+}*/
 
 int	builtin_export(char **args, t_exec *exec_ctx)
 {

@@ -6,7 +6,7 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 01:46:08 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/04/07 07:13:36 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/04/09 00:48:53 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ typedef struct s_redir
 {
 	t_token_type	type;
 	char			*filename;
+	int				heredoc_pipe;
+	int				quoted;
 	struct s_redir	*next;
 }	t_redir;
 

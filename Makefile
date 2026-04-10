@@ -24,10 +24,6 @@ SRC =	src/main/main.c\
 	src/parser/utils_cmd.c\
 	src/parser/translation_function.c\
 	src/executor/executor.c\
-	src/executor/first_utils_executor.c\
-	src/executor/second_utils_executor.c\
-	src/executor/third_utils_executor.c\
-	src/executor/fourth_utils_executor.c\
 	src/expander/expander_quotes.c\
 	src/expander/expander_variables.c\
 	src/expander/expander.c\
