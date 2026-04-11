@@ -6,7 +6,7 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 19:58:17 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/03/08 23:58:33 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/04/11 07:48:59 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	parse_error(char *msg)
 {
-	fprintf(stderr, "Parser Error: %s\n", msg);
+	error_msg("Parser", NULL, msg);
 }
 
 void	free_ast(t_ast *node)

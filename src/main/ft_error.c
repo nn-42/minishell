@@ -1,31 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_error.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/31 04:58:40 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/04/11 02:26:40 by nfaronia         ###   ########.fr       */
+/*   Created: 2026/04/10 23:40:39 by nfaronia          #+#    #+#             */
+/*   Updated: 2026/04/11 07:47:05 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	builtin_env(char **args, t_exec *exec_ctx)
+void	error_msg(char *prefix, char *arg, char *msg)
 {
-	int	i;
-
-	if (args[1])
+	if (prefix)
 	{
-		error_msg("env", args[1], "No such file or directory");
-		return (1);
+		ft_putstr_fd(prefix, STDERR_FILENO);
+		ft_putstr_fd(": ", STDERR_FILENO);
 	}
-	i = 0;
-	while (exec_ctx->envp[i])
+	if (arg)
 	{
-		printf("%s\n", exec_ctx->envp[i]);
-		i++;
+		ft_putstr_fd(arg, STDERR_FILENO);
+		ft_putstr_fd(": ", STDERR_FILENO);
 	}
-	return (0);
+	if (msg)
+		ft_putstr_fd(msg, STDERR_FILENO);
+	write(STDERR_FILENO, "\n", 1);
 }

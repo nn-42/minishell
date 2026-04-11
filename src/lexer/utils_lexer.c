@@ -6,7 +6,7 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 00:04:14 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/04/07 08:11:59 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/04/11 07:43:33 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	lexer_error(char *msg)
 {
-	fprintf(stderr, "Lexer Error: %s\n", msg);
+	error_msg("Lexer", NULL, msg);
 }
 
 void	is_null_lexer(char *value, t_token	*token)

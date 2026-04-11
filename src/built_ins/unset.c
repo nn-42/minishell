@@ -6,7 +6,7 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 05:41:37 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/04/09 02:51:16 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/04/11 02:37:07 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	builtin_unset(char **args, t_exec *exec_ctx)
 	{
 		if (unset_env_var(&exec_ctx->envp, args[i]) < 0)
 		{
-			printf("unset: failed to remove %s\n", args[i]);
+			error_msg("unset", args[i], "failed to remove");
 			return (1);
 		}
 		i++;

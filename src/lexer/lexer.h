@@ -6,7 +6,7 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 01:44:00 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/04/07 07:13:48 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/04/11 07:45:13 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ t_token	*lexer(char *line);
 void	hori(char *line, int *i, t_token **tokens);
 void	aort(char *line, int *i, t_token **tokens);
 void	operator(char *line, int *i, t_token **tokens);
-int		word(char *line, int *i, t_token **tokens);
 
 // utils_lexer.c
 void	lexer_error(char *msg);
@@ -46,5 +45,11 @@ void	is_null_lexer(char *value, t_token	*token);
 int		add_token(t_token	**tokens, t_token_type type, char *value);
 void	free_tokens(t_token *tokens);
 int		quote(char **tokens_word, char *line, int *i);
+
+// word_lexer.c
+int		sep(char c);
+char	*plain(char *line, int *i);
+void	appennd_part(char **result, char *part);
+int		word(char *line, int *i, t_token **tokens);
 
 #endif

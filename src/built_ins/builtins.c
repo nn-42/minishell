@@ -6,7 +6,7 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 05:51:06 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/04/04 18:09:48 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/04/10 23:37:18 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,10 @@ int	execute_builtin(char **args, t_exec *exec_ctx)
 	return (0);
 }
 
-void	cleanup_shell(void)
+void	cleanup_shell(t_exec *exec_ctx)
 {
 	rl_clear_history();
+	free_history();
+	if (exec_ctx && exec_ctx->envp)
+		free_env(exec_ctx->envp);
 }

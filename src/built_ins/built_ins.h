@@ -6,7 +6,7 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 01:29:33 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/03/31 05:56:15 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/04/11 06:05:17 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,7 @@
 // builtins.c
 int		is_builtin(char *cmd);
 int		execute_builtin(char **args, t_exec *exec_ctx);
-void	cleanup_shell(void);
-
+void	cleanup_shell(t_exec *exec_ctx);
 // cd.c
 char	*get_home(t_exec *exec_ctx, char *old_pwd);
 char	*get_path(char **args, t_exec *exec_ctx, char *old_pwd);
@@ -27,6 +26,7 @@ int		set_env(char *old_pwd, t_exec *exec_ctx);
 int		builtin_cd(char **args, t_exec *exec_ctx);
 
 // echo.c
+int		dash_n(char *n);
 int		built_echo(char **args);
 
 // env.c
@@ -36,9 +36,9 @@ int		builtin_env(char **args, t_exec *exec_ctx);
 int		built_pwd(void);
 
 // export.c
-int		update_env_var(char ***envp, char *name, char *value);
-int		set_env_var(char ***envp, char *name, char *value);
 int		parse_export_arg(char *arg, char **name, char **value);
+int		is_valid_identifier(char *name);
+int		handle_export(char *name, char *value, char *arg, t_exec *exec_ctx);
 int		export_arg(char *arg, t_exec *exec_ctx);
 int		builtin_export(char **args, t_exec *exec_ctx);
 
@@ -50,8 +50,10 @@ void	free_env(char **envp);
 int		find_env_var(char **envp, char *name);
 
 // second_utils_export.c
+int		update_env_var(char ***envp, char *name, char *value);
 char	*build_var(char *name, char *value);
 int		add_env_var(char ***envp, char *name, char *value);
+int		set_env_var(char ***envp, char *name, char *value);
 
 // unset.c
 void	copy_env(char ***envp, char **new_env, int index, int count);

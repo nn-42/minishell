@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   executor.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/31 06:03:35 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/04/09 02:49:01 by nfaronia         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 int	is_executable(char *path)
@@ -73,7 +61,6 @@ char	*resolve_cmd_path(char *command, t_exec *exec_ctx)
 	return (find_command_in_path(command, exec_ctx));
 }
 
-////////////////////redirection//////////////////////
 int	handle_input_redir(char *filename)
 {
 	int	fd;
@@ -119,30 +106,38 @@ int	handle_append_redir(char *filename)
 	return (0);
 }
 
-
-///////////////////
-static int	read_heredoc_lines(int write_fd, t_redir *redir, t_exec *exec_ctx)
+static int read_heredoc_lines(int write_fd, t_redir *redir, t_exec *exec_ctx)
 {
-	char	*line;
-	char	*expanded;
-
+	char *line;
+	char *expanded_delim;
+	char *expanded_line;
+	
+	if (redir->quoted)
+		expanded_delim = ft_strdup(redir->filename);
+	else
+		expanded_delim = expander_variables(redir->filename, exec_ctx);
 	while (1)
 	{
 		line = readline("> ");
-		if (!line || ft_strcmp(line, redir->filename) == 0)
+		if (!line)
+			break ;
+		if (redir->quoted)
+			expanded_line = ft_strdup(line);
+		else
+			expanded_line = expander_variables(line, exec_ctx);
+		if (ft_strcmp(expanded_line, expanded_delim) == 0)
 		{
 			free(line);
-			return (0);
+			free(expanded_line);
+			break ;
 		}
-		if (redir->quoted)
-			expanded = ft_strdup(line);
-		else
-			expanded = expander_variables(line, exec_ctx);
-		free(line);
-		write(write_fd, expanded, ft_strlen(expanded));
+		write(write_fd, expanded_line, ft_strlen(expanded_line));
 		write(write_fd, "\n", 1);
-		free(expanded);
+		free(line);
+		free(expanded_line);
 	}
+	free(expanded_delim);
+	return (0);
 }
 
 int	process_heredocs(t_cmd *cmd, t_exec *exec_ctx)
@@ -205,7 +200,6 @@ int	process_heredocs(t_cmd *cmd, t_exec *exec_ctx)
 	sigaction(SIGINT, &old_sa, NULL);
 	return (0);
 }
-//////////////////////
 
 int	handle_heredoc(t_redir *redir)
 {
@@ -239,7 +233,7 @@ int	apply_redirections(t_redir *redirections, t_exec *exec_ctx)
 	}
 	return (0);
 }
-///////////////////////////////
+
 int	execute_simple_cmd(t_cmd *cmd, t_exec *exec_ctx)
 {
 	pid_t	pid;
@@ -286,7 +280,7 @@ int	execute_simple_cmd(t_cmd *cmd, t_exec *exec_ctx)
 		path = resolve_cmd_path(cmd->args[0], exec_ctx);
 		if (!path)
 		{
-			printf("minishell: %s: command not found\n", cmd->args[0]);
+			error_msg("minishell", cmd->args[0], "command not found");
 			status = 127;
 		}
 		else
@@ -300,8 +294,7 @@ int	execute_simple_cmd(t_cmd *cmd, t_exec *exec_ctx)
 
 				if (errno == EACCES)
 				{
-					printf("minishell: %s: Permission denied\n",
-						cmd->args[0]);
+					error_msg("minishell", cmd->args[0], "Permission denied");
 					exit(126);
 				}
 				perror("minishell");
@@ -406,13 +399,13 @@ void	execute_pipeline_command(t_cmd *cmd, t_exec *exec_ctx, int **pipes,
 	path = resolve_cmd_path(cmd->args[0], exec_ctx);
 	if (!path)
 	{
-		printf("minishell: %s: command not found\n", cmd->args[0]);
+		error_msg("minishell", cmd->args[0], "command not found");
 		exit(127);
 	}
 	execve(path, cmd->args, exec_ctx->envp);
 	if (errno == EACCES)
 	{
-		printf("minishell: %s: Permission denied\n", cmd->args[0]);
+		error_msg("minishell", cmd->args[0], "Permission denied");
 		exit(126);
 	}
 	else

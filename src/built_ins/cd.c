@@ -6,7 +6,7 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/09 07:23:41 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/04/09 01:17:35 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/04/11 02:24:30 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*get_home(t_exec *exec_ctx, char *old_pwd)
 	i = find_env_var(exec_ctx->envp, "HOME");
 	if (i == -1)
 	{
-		fprintf(stderr, "cd: HOME not set\n");
+		error_msg("cd", NULL, "HOME not set");
 		free(old_pwd);
 		return (NULL);
 	}
@@ -39,7 +39,7 @@ char	*get_path(char **args, t_exec *exec_ctx, char *old_pwd)
 		return (get_home(exec_ctx, old_pwd));
 	if (args[2])
 	{
-		fprintf(stderr, "cd: too many arguments\n");
+		error_msg("cd", NULL, "too many arguments");
 		free(old_pwd);
 		return (NULL);
 	}
@@ -80,7 +80,7 @@ int	builtin_cd(char **args, t_exec *exec_ctx)
 		need_free = 1;
 	if (chdir(path) != 0)
 	{
-		fprintf(stderr, "cd: %s: %s\n", path, strerror(errno));
+		error_msg("cd", path, strerror(errno));
 		free(old_pwd);
 		if (need_free)
 			free(path);

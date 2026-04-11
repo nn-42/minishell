@@ -6,7 +6,7 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/14 12:49:05 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/03/07 12:50:58 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/04/11 07:41:51 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,33 +51,6 @@ void	operator(char *line, int *i, t_token **tokens)
 		hori(line, i, tokens);
 	else if (line[*i] == '>')
 		aort(line, i, tokens);
-}
-
-int	word(char *line, int *i, t_token **tokens)
-{
-	int		start;
-	char	*tokens_word;
-
-	if (line[*i] == '\'' || line[*i] == '"')
-	{
-		if (!quote(&tokens_word, line, i))
-			return (0);
-	}
-	else
-	{
-		start = *i;
-		while (line[*i] && line[*i] != ' ' && line[*i] != '|'
-			&& line[*i] != '\t' && line[*i] != '\n'
-			&& line[*i] != '<' && line[*i] != '>'
-			&& line[*i] != '\'' && line[*i] != '"')
-			(*i)++;
-		tokens_word = ft_substr(line, start, *i - start);
-		if (!tokens_word)
-			return (0);
-	}
-	add_token(tokens, TOKEN_WORD, tokens_word);
-	free(tokens_word);
-	return (1);
 }
 
 t_token	*lexer(char *line)

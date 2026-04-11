@@ -15,8 +15,10 @@ GNL_SRC = $(GNL_DIR)/get_next_line.c \
 SRC =	src/main/main.c\
 	src/main/prompt.c\
 	src/main/history.c\
+	src/main/ft_error.c\
 	src/signals/signals.c\
 	src/lexer/lexer.c\
+	src/lexer/word_lexer.c\
 	src/lexer/utils_lexer.c\
 	src/parser/parser.c\
 	src/parser/parse_pipe.c\
@@ -27,6 +29,7 @@ SRC =	src/main/main.c\
 	src/expander/expander_quotes.c\
 	src/expander/expander_variables.c\
 	src/expander/expander.c\
+	src/expander/expander_all.c\
 	src/built_ins/cd.c\
 	src/built_ins/builtins.c\
 	src/built_ins/echo.c\

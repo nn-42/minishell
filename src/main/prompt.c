@@ -6,7 +6,7 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 08:49:05 by nnasered          #+#    #+#             */
-/*   Updated: 2026/04/07 07:20:23 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/04/11 07:50:14 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,19 +31,16 @@ bool	is_empty_input(const char *input)
 char	*read_input(void)
 {
 	char	*input;
-	int		len;
 
 	if (isatty(STDIN_FILENO))
+	{
 		input = readline("minishell$ ");
+	}
 	else
 	{
-		input = get_next_line(STDIN_FILENO);
-		if (input)
-		{
-			len = ft_strlen(input);
-			if (len > 0 && input[len - 1] == '\n')
-				input[len - 1] = '\0';
-		}
+		printf("minishell$ ");
+		fflush(stdout);
+		input = readline("");
 	}
 	return (input);
 }

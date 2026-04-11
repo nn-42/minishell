@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   history.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnasered <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 08:48:45 by nnasered          #+#    #+#             */
-/*   Updated: 2026/02/17 08:48:47 by nnasered         ###   ########.fr       */
+/*   Updated: 2026/04/11 08:13:42 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,30 +72,16 @@ void	save_history(void)
 	close(fd);
 }
 
-static void	load_history(void)
-{
-	int		fd;
-	char	*line;
-
-	fd = open(HISTORY_FILE, O_RDONLY);
-	if (fd < 0)
-		return ;
-	line = get_next_line(fd);
-	while (line)
-	{
-		if (*line && line[ft_strlen(line) - 1] == '\n')
-			line[ft_strlen(line) - 1] = '\0';
-		add_to_history(line);
-		free(line);
-		line = get_next_line(fd);
-	}
-	close(fd);
-}
-
 void	init_history(void)
 {
 	ft_lstclear(&g_history, free);
 	g_hist_size = 0;
 	rl_clear_history();
 	load_history();
+}
+
+void	free_history(void)
+{
+	ft_lstclear(&g_history, free);
+	g_hist_size = 0;
 }

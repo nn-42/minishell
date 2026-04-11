@@ -6,7 +6,7 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 18:18:22 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/04/09 02:57:59 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/04/11 06:57:24 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,20 @@ char	*get_env_value(t_exec *env, char *var_name)
 	return (NULL);
 }
 
-char	*var(char *str, int *i, t_exec *env)
+char	*var_nname(char *str, int *i)
 {
 	int		start;
+	char	*var_name;
+
+	start = ++(*i);
+	while (str[*i] && (ft_isalnum(str[*i]) || str[*i] == '_'))
+		(*i)++;
+	var_name = ft_substr(str, start, *i - start);
+	return (var_name);
+}
+
+char	*var(char *str, int *i, t_exec *env)
+{
 	char	*var_name;
 	char	*var_value;
 	char	*new;
@@ -44,17 +55,12 @@ char	*var(char *str, int *i, t_exec *env)
 		(*i) += 2;
 		return (ft_itoa(env->last_exit));
 	}
-
-    if (!str[*i + 1] || (!ft_isalnum(str[*i + 1]) && str[*i + 1] != '_'))
-    {
-        (*i)++;
-        return ft_strdup("$");
-    }
-
-	start = ++(*i);
-	while (str[*i] && (ft_isalnum(str[*i]) || str[*i] == '_'))
+	if (!str[*i + 1] || (!ft_isalnum(str[*i + 1]) && str[*i + 1] != '_'))
+	{
 		(*i)++;
-	var_name = ft_substr(str, start, *i - start);
+		return (ft_strdup("$"));
+	}
+	var_name = var_nname(str, i);
 	if (!var_name)
 		return (NULL);
 	var_value = get_env_value(env, var_name);
@@ -63,8 +69,6 @@ char	*var(char *str, int *i, t_exec *env)
 	free(var_name);
 	new = ft_strdup(var_value);
 	free(var_value);
-	if (!new)
-		return (NULL);
 	return (new);
 }
 
