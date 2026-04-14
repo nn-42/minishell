@@ -6,7 +6,7 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 13:47:24 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/03/07 13:49:42 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/04/14 12:47:43 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ t_ast	*pipe_node(t_ast *left, t_ast *right)
 	node->left = left;
 	node->right = right;
 	node->args = NULL;
+	node->args_quoted = NULL;
 	node->redirs = NULL;
 	return (node);
 }
@@ -39,17 +40,28 @@ bool	match_token(t_parser *pars, t_token_type type)
 
 t_ast	*parse_pipe(t_parser *pars)
 {
-	t_ast		*left;
-	t_ast		*right;
+	t_ast	*left;
+	t_ast	*right;
 
+	if (pars->current && pars->current->type == TOKEN_PIPE)
+	{
+		parse_error("syntax error near unexpected token `|'");
+		return (NULL);
+	}
 	left = parse_cmd(pars);
 	if (!left)
 		return (NULL);
 	while (match_token(pars, TOKEN_PIPE))
 	{
-		if (!pars->current || pars->current->type == TOKEN_PIPE)
+		if (!pars->current || pars->current->type == TOKEN_EOF)
 		{
-			parse_error("syntax error near pipe");
+			parse_error("syntax error near unexpected token `newline'");
+			free_ast(left);
+			return (NULL);
+		}
+		if (pars->current->type == TOKEN_PIPE)
+		{
+			parse_error("syntax error near unexpected token `|'");
 			free_ast(left);
 			return (NULL);
 		}

@@ -15,6 +15,7 @@ GNL_SRC = $(GNL_DIR)/get_next_line.c \
 SRC =	src/main/main.c\
 	src/main/prompt.c\
 	src/main/history.c\
+	src/main/history_utils.c\
 	src/main/ft_error.c\
 	src/signals/signals.c\
 	src/lexer/lexer.c\
@@ -36,8 +37,8 @@ SRC =	src/main/main.c\
 	src/built_ins/env.c\
 	src/built_ins/exit.c\
 	src/built_ins/export.c\
-	src/built_ins/first_utils_export.c\
-	src/built_ins/second_utils_export.c\
+	src/built_ins/env_modify.c\
+	src/built_ins/env_utils.c\
 	src/built_ins/pwd.c\
 	src/built_ins/unset.c\
 	$(GNL_SRC)

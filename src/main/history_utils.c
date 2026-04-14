@@ -1,28 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   history_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/09 07:23:13 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/04/14 12:04:36 by nfaronia         ###   ########.fr       */
+/*   Created: 2026/02/17 08:48:45 by nnasered          #+#    #+#             */
+/*   Updated: 2026/04/14 13:01:51 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	builtin_pwd(void)
+void	load_history(void)
 {
-	char	*cwd;
+	int		fd;
+	char	*line;
 
-	cwd = getcwd(NULL, 0);
-	if (!cwd)
+	fd = open(HISTORY_FILE, O_RDONLY);
+	if (fd < 0)
+		return ;
+	line = get_next_line(fd);
+	while (line)
 	{
-		perror("pwd");
-		return (1);
+		if (*line && line[ft_strlen(line) - 1] == '\n')
+			line[ft_strlen(line) - 1] = '\0';
+		add_to_history(line);
+		free(line);
+		line = get_next_line(fd);
 	}
-	printf("%s\n", cwd);
-	free(cwd);
-	return (0);
+	close(fd);
 }

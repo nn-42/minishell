@@ -6,7 +6,7 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/03 12:30:29 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/03/31 14:15:05 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/04/14 13:05:05 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,5 +44,10 @@
 # define PROMPT "minishell$ "
 # define HISTORY_FILE ".minishell_history"
 # define MAX_HISTORY 1000
+# define NO_QUOTE 0
+# define SINGLE_QUOTE 1
+# define DOUBLE_QUOTE 2
+# define LL_MAX "9223372036854775807"
+# define LL_MIN "9223372036854775808"
 
 #endif

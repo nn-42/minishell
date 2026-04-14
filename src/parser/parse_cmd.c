@@ -6,7 +6,7 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 13:52:17 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/03/07 13:55:52 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/04/14 12:46:59 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ t_ast	*cmd_node(void)
 	node->left = NULL;
 	node->right = NULL;
 	node->args = NULL;
+	node->args_quoted = NULL;
 	node->redirs = NULL;
 	return (node);
 }
@@ -31,8 +32,8 @@ bool	pars_type(t_parser *pars)
 {
 	if (pars->current->type == TOKEN_REDIR_IN
 		|| pars->current->type == TOKEN_REDIR_OUT
-		|| pars->current->type == TOKEN_APPEND
-		|| pars->current->type == TOKEN_HEREDOC)
+		|| pars->current->type == TOKEN_REDIR_APPEND
+		|| pars->current->type == TOKEN_REDIR_HEREDOC)
 		return (1);
 	return (0);
 }
@@ -65,6 +66,7 @@ t_ast	*parse_cmd(t_parser *pars)
 	}
 	if (!node->args && !node->redirs)
 	{
+		free(node->args_quoted);
 		free(node);
 		return (NULL);
 	}

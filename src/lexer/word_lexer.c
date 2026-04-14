@@ -6,7 +6,7 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/14 12:49:05 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/04/11 07:41:37 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/04/14 12:26:01 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,14 +48,25 @@ int	word(char *line, int *i, t_token **tokens)
 {
 	char	*tokens_word;
 	char	*part;
+	int		quoted_flag;
 
 	tokens_word = ft_strdup("");
 	if (!tokens_word)
 		return (0);
+	quoted_flag = NO_QUOTE;
 	while (line[*i] && !sep(line[*i]))
 	{
-		if (line[*i] == '\'' || line[*i] == '"')
+		if (line[*i] == '\'')
 		{
+			if (quoted_flag == NO_QUOTE)
+				quoted_flag = SINGLE_QUOTE;
+			if (!quote(&part, line, i))
+				return (free(tokens_word), 0);
+		}
+		else if (line[*i] == '"')
+		{
+			if (quoted_flag == NO_QUOTE)
+				quoted_flag = DOUBLE_QUOTE;
 			if (!quote(&part, line, i))
 				return (free(tokens_word), 0);
 		}
@@ -67,7 +78,8 @@ int	word(char *line, int *i, t_token **tokens)
 		}
 		appennd_part(&tokens_word, part);
 	}
-	add_token(tokens, TOKEN_WORD, tokens_word);
+	add_token(tokens, TOKEN_WORD, tokens_word, quoted_flag);
 	free(tokens_word);
 	return (1);
 }
+

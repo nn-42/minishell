@@ -6,48 +6,48 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/09 07:22:45 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/04/11 00:41:51 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/04/14 11:59:42 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	dash_n(char *n)
+static int	is_n_flag(char *str)
 {
 	int	i;
 
-	if (!n || n[0] != '-')
+	if (!str || str[0] != '-' || !str[1])
 		return (0);
 	i = 1;
-	while (n[i])
+	while (str[i])
 	{
-		if (n[i] != 'n')
+		if (str[i] != 'n')
 			return (0);
 		i++;
 	}
 	return (1);
 }
 
-int	built_echo(char **args)
+int	builtin_echo(char **args)
 {
 	int	i;
-	int	new_line;
+	int	newline;
 
+	newline = 1;
 	i = 1;
-	new_line = 1;
-	while (args[i] && dash_n(args[i]))
+	while (args[i] && is_n_flag(args[i]))
 	{
-		new_line = 0;
+		newline = 0;
 		i++;
 	}
 	while (args[i])
 	{
-		write(STDOUT_FILENO, args[i], ft_strlen(args[i]));
+		ft_putstr_fd(args[i], STDOUT_FILENO);
 		if (args[i + 1])
 			write(STDOUT_FILENO, " ", 1);
 		i++;
 	}
-	if (new_line)
+	if (newline)
 		write(STDOUT_FILENO, "\n", 1);
 	return (0);
 }

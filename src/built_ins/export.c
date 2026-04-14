@@ -6,36 +6,19 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 05:07:26 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/04/11 03:12:34 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/04/14 12:16:24 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	parse_export_arg(char *arg, char **name, char **value)
-{
-	char	*equals;
-
-	equals = ft_strchr(arg, '=');
-	if (!equals)
-		return (0);
-	*name = ft_substr(arg, 0, equals - arg);
-	*value = ft_strdup(equals + 1);
-	if (!*name || !*value)
-	{
-		free(*name);
-		free(*value);
-		return (0);
-	}
-	return (1);
-}
-
-int	is_valid_identifier(char *name)
+static int	is_valid_identifier(char *name)
 {
 	int	i;
 
-	i = 0;
-	if (!name || (!ft_isalpha(name[i]) && name[i] != '_'))
+	if (!name || !*name)
+		return (0);
+	if (!ft_isalpha(name[0]) && name[0] != '_')
 		return (0);
 	i = 1;
 	while (name[i])
@@ -47,62 +30,93 @@ int	is_valid_identifier(char *name)
 	return (1);
 }
 
-int	handle_export(char *name, char *value, char *arg, t_exec *exec_ctx)
+static int	parse_export_arg(char *arg, char **name, char **value)
 {
-	if (!is_valid_identifier(name))
+	char	*equals;
+	int		name_len;
+
+	equals = ft_strchr(arg, '=');
+	if (!equals)
+	{
+		*name = ft_strdup(arg);
+		*value = NULL;
+		if (*name)
+			return (0);
+		else
+			return (-1);
+	}
+	name_len = equals - arg;
+	*name = ft_substr(arg, 0, name_len);
+	*value = expander_quotes(equals + 1);
+	if (!*name || !*value)
+	{
+		free(*name);
+		free(*value);
+		return (0);
+	}
+	return (1);
+}
+
+static int	parse_and_validate_export_arg(char *arg, char **name,
+		char **value, int *parse_result)
+{
+	*parse_result = parse_export_arg(arg, name, value);
+	if (*parse_result == -1)
+		return (1);
+	if (!is_valid_identifier(*name))
 	{
 		error_msg("export", arg, "not a valid identifier");
-		free (name);
-		free(value);
+		free(*name);
+		free(*value);
 		return (1);
 	}
-	if (set_env_var(&exec_ctx->envp, name, value) < 0)
-	{
-		error_msg("export", name, "failed to set");
-		free (name);
-		free(value);
-		return (1);
-	}
-	free (name);
-	free(value);
 	return (0);
 }
 
-int	export_arg(char *arg, t_exec *exec_ctx)
+static int	handle_export_arg(char *arg, t_exec *exec_ctx)
 {
 	char	*name;
 	char	*value;
+	int		parse_result;
+	int		ret;
 
-	if (parse_export_arg(arg, &name, &value))
-		return (handle_export(name, value, arg, exec_ctx));
-	if (!is_valid_identifier(arg))
-	{
-		error_msg("export", arg, "not a valid identifier");
+	name = NULL;
+	value = NULL;
+	ret = 0;
+	if (parse_and_validate_export_arg(arg, &name, &value, &parse_result) != 0)
 		return (1);
-	}
-	if (set_env_var(&exec_ctx->envp, arg, "") < 0)
+	if (parse_result == 1)
 	{
-		error_msg("export", arg, "failed to set");
-		return (1);
+		if (set_env_var(&exec_ctx->envp, name, value) < 0)
+		{
+			error_msg("export", name, "failed to set");
+			ret = 1;
+		}
+		free(name);
+		free(value);
 	}
-	return (0);
+	else
+		free(name);
+	return (ret);
 }
 
 int	builtin_export(char **args, t_exec *exec_ctx)
 {
-	int		i;
+	int	i;
+	int	ret;
 
 	if (!args[1])
 	{
 		print_export_format(exec_ctx->envp);
 		return (0);
 	}
+	ret = 0;
 	i = 1;
 	while (args[i])
 	{
-		if (export_arg(args[i], exec_ctx))
-			return (1);
+		if (handle_export_arg(args[i], exec_ctx))
+			ret = 1;
 		i++;
 	}
-	return (0);
+	return (ret);
 }

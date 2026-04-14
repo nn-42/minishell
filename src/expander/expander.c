@@ -6,7 +6,7 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 18:18:22 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/04/11 06:41:01 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/04/14 12:43:37 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	expander(t_ast *node, t_exec *env)
 {
 	if (!node)
 		return (0);
-	if (node->args && expander_args(node->args, env))
+	if (node->args && expander_args(&node->args, node->args_quoted, env))
 		return (1);
 	if (node->redirs && expander_redirs(node->redirs, env))
 		return (1);

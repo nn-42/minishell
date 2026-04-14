@@ -6,7 +6,7 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 19:58:17 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/04/11 07:48:59 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/04/14 12:48:29 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ void	free_ast(t_ast *node)
 	free_ast(node->right);
 	if (node->args)
 		free_arg(node->args);
+	if (node->args_quoted)
+		free(node->args_quoted);
 	if (node->redirs)
 		free_redir(node->redirs);
 	free(node);

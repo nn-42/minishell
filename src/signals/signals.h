@@ -6,7 +6,7 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 01:46:43 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/03/28 01:52:16 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/04/14 12:59:14 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,9 @@
 
 # include "minishell.h"
 
-extern int	g_signal;
+extern volatile sig_atomic_t g_signal;
 
 // signals.c
-void	handler_cntrc(int sig);
-void	handler_backslash(int sig);
-void	signals(void);
+void	setup_signals(void);
 
 #endif

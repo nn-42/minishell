@@ -6,7 +6,7 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 13:30:14 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/04/07 07:41:34 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/04/14 12:49:18 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,15 @@ t_redir	*copy_redirs(t_redir *redir)
 	{
 		new_node = malloc(sizeof(t_redir));
 		if (!new_node)
+		{
+			free_redir(new_list);
 			return (NULL);
+		}
 		new_node->type = current->type;
-		new_node->filename = ft_strdup(current->filename);
+		new_node->file = ft_strdup(current->file);
+		new_node->quoted = current->quoted;
+		new_node->ambiguous = current->ambiguous;
+		new_node->heredoc_pipe = current->heredoc_pipe;
 		new_node->next = new_list;
 		new_list = new_node;
 		current = current->next;
@@ -49,7 +55,10 @@ t_cmd	*create_cmd_from_ast(t_ast *node)
 		count++;
 	cmd->args = malloc(sizeof(char *) * (count + 1));
 	if (!cmd->args)
+	{
+		free(cmd);
 		return (NULL);
+	}
 	while (i < count)
 	{
 		cmd->args[i] = ft_strdup(node->args[i]);

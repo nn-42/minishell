@@ -6,7 +6,7 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 02:03:16 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/04/10 23:43:22 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/04/14 12:22:13 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,6 @@ typedef struct s_exec
 	char	**envp;
 	int		last_exit;
 }	t_exec;
-
-typedef struct s_pipe_ctx
-{
-	int	**pipes;
-	int	index;
-	int	num;
-}	t_pipe_ctx;
 
 /* executor.c */
 int	execute_simple_cmd(t_cmd *cmd, t_exec *exec_ctx);

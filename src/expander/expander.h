@@ -6,7 +6,7 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 01:37:29 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/04/11 06:59:10 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/04/14 12:55:05 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*expander_variables(char *str, t_exec *env);
 int		expander_all_quotes(char c, int *in_singel, int *in_double);
 char	*expander_all_dollor(char *str, t_exec *env, int *i, char *new_str);
 char	*expander_all(char *str, t_exec *env);
-int		expander_args(char **args, t_exec *env);
+int     expander_args(char ***args, int *args_quoted, t_exec *env);
 int		expander_redirs(t_redir *redir, t_exec *env);
 
 #endif

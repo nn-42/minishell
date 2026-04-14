@@ -6,7 +6,7 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 01:46:08 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/04/09 00:48:53 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/04/14 12:54:33 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,10 @@ typedef enum e_node_type
 typedef struct s_redir
 {
 	t_token_type	type;
-	char			*filename;
+	char			*file;
 	int				heredoc_pipe;
 	int				quoted;
+	int				ambiguous;
 	struct s_redir	*next;
 }	t_redir;
 
@@ -37,6 +38,7 @@ typedef struct s_ast
 	struct s_ast	*left;
 	struct s_ast	*right;
 	char			**args;
+	int				*args_quoted;
 	t_redir			*redirs;
 }	t_ast;
 

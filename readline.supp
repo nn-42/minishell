@@ -1,0 +1,12 @@
+{
+   ignore readline leaks
+   Memcheck:Leak
+   ...
+   obj:*/libreadline.so.*
+}
+{
+   ignore history leaks
+   Memcheck:Leak
+   ...
+   obj:*/libhistory.so.*
+}

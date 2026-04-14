@@ -6,31 +6,11 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 07:21:15 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/04/11 08:15:33 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/04/14 12:39:31 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	load_history(void)
-{
-	int		fd;
-	char	*line;
-
-	fd = open(HISTORY_FILE, O_RDONLY);
-	if (fd < 0)
-		return ;
-	line = get_next_line(fd);
-	while (line)
-	{
-		if (*line && line[ft_strlen(line) - 1] == '\n')
-			line[ft_strlen(line) - 1] = '\0';
-		add_to_history(line);
-		free(line);
-		line = get_next_line(fd);
-	}
-	close(fd);
-}
 
 int	init_exec(t_exec *exec_ctx, char **envp)
 {
@@ -41,7 +21,7 @@ int	init_exec(t_exec *exec_ctx, char **envp)
 		return (0);
 	}
 	exec_ctx->last_exit = 0;
-	signals();
+	setup_signals();
 	init_history();
 	return (1);
 }
@@ -74,16 +54,22 @@ void	process_line(char *input, t_exec *exec_ctx)
 	tokens = lexer(input);
 	free(input);
 	if (!tokens)
+	{
+		exec_ctx->last_exit = 2;
 		return ;
+	}
 	ast = parser(tokens);
 	free_tokens(tokens);
 	if (!ast)
+	{
+		exec_ctx->last_exit = 2;
 		return ;
+	}
 	if (expander(ast, exec_ctx))
 		return (free_ast(ast));
 	cmd_list = ast_to_cmd_list(ast);
 	free_ast(ast);
-	if (cmd_list && cmd_list->args && cmd_list->args[0])
+	if (cmd_list)
 		execute_pipeline(cmd_list, exec_ctx);
 	free_cmd_list(cmd_list);
 }
@@ -109,5 +95,8 @@ int	main(int argc, char **argv, char **envp)
 	}
 	save_history();
 	free_env(exec_ctx.envp);
+	rl_clear_history();
+	free_history();
 	return (exec_ctx.last_exit);
 }
+

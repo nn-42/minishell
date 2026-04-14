@@ -6,7 +6,7 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 00:04:14 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/04/11 07:43:33 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/04/14 12:25:25 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	is_null_lexer(char *value, t_token	*token)
 		token->value = NULL;
 }
 
-int	add_token(t_token	**tokens, t_token_type type, char *value)
+int	add_token(t_token	**tokens, t_token_type type, char *value, int quoted)
 {
 	t_token	*token;
 	t_token	*new_token;
@@ -40,6 +40,7 @@ int	add_token(t_token	**tokens, t_token_type type, char *value)
 		free(token);
 		return (0);
 	}
+	token->quoted = quoted;
 	token->next = NULL;
 	if (!*tokens)
 		*tokens = token;

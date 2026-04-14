@@ -6,7 +6,7 @@
 /*   By: nfaronia <nfaronia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/14 12:49:05 by nfaronia          #+#    #+#             */
-/*   Updated: 2026/04/11 07:41:51 by nfaronia         ###   ########.fr       */
+/*   Updated: 2026/04/14 12:24:48 by nfaronia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@ void	hori(char *line, int *i, t_token **tokens)
 {
 	if (line[*i] == '<' && line[*i + 1] == '<')
 	{
-		add_token(tokens, TOKEN_HEREDOC, "<<");
+		add_token(tokens, TOKEN_REDIR_HEREDOC, "<<", 0);
 		(*i) += 2;
 	}
 	else if (line[*i] == '<')
 	{
-		add_token(tokens, TOKEN_REDIR_IN, "<");
+		add_token(tokens, TOKEN_REDIR_IN, "<", 0);
 		(*i)++;
 	}
 }
@@ -30,12 +30,12 @@ void	aort(char *line, int *i, t_token **tokens)
 {
 	if (line[*i] == '>' && line[*i + 1] == '>')
 	{
-		add_token(tokens, TOKEN_APPEND, ">>");
+		add_token(tokens, TOKEN_REDIR_APPEND, ">>", 0);
 		(*i) += 2;
 	}
 	else if (line[*i] == '>')
 	{
-		add_token(tokens, TOKEN_REDIR_OUT, ">");
+		add_token(tokens, TOKEN_REDIR_OUT, ">", 0);
 		(*i)++;
 	}
 }
@@ -44,7 +44,7 @@ void	operator(char *line, int *i, t_token **tokens)
 {
 	if (line[*i] == '|')
 	{
-		add_token(tokens, TOKEN_PIPE, "|");
+		add_token(tokens, TOKEN_PIPE, "|", 0);
 		(*i)++;
 	}
 	else if (line[*i] == '<')
@@ -78,6 +78,6 @@ t_token	*lexer(char *line)
 			}
 		}
 	}
-	add_token(&tokens, TOKEN_EOF, NULL);
+	add_token(&tokens, TOKEN_EOF, NULL, 0);
 	return (tokens);
 }

@@ -30,7 +30,17 @@ char	*find_command_in_path(char *command, t_exec *exec_ctx)
 	while (paths[i])
 	{
 		temp = ft_strjoin(paths[i], "/");
+		if (!temp)
+		{
+			i++;
+			continue ;
+		}
 		full_path = ft_strjoin(temp, command);
+		if (!full_path)
+		{
+			i++;
+			continue ;
+		}
 		free(temp);
 		if (is_executable(full_path))
 		{
@@ -68,7 +78,7 @@ int	handle_input_redir(char *filename)
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
 	{
-		perror(filename);
+		error_msg("mininshell", filename, strerror(errno));
 		return (-1);
 	}
 	dup2(fd, STDIN_FILENO);
@@ -83,7 +93,7 @@ int	handle_output_redir(char *filename)
 	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd < 0)
 	{
-		perror(filename);
+		error_msg("mininshell", filename, strerror(errno));
 		return (-1);
 	}
 	dup2(fd, STDOUT_FILENO);
@@ -98,7 +108,7 @@ int	handle_append_redir(char *filename)
 	fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd < 0)
 	{
-		perror(filename);
+		error_msg("mininshell", filename, strerror(errno));
 		return (-1);
 	}
 	dup2(fd, STDOUT_FILENO);
@@ -108,14 +118,49 @@ int	handle_append_redir(char *filename)
 
 static int read_heredoc_lines(int write_fd, t_redir *redir, t_exec *exec_ctx)
 {
+    char *line;
+    char *expanded_line;
+    char *delim;
+
+    delim = redir->file; // جاهز من expander_redirs، لا توسيع ثاني
+    while (1)
+    {
+        line = readline("> ");
+        if (!line) // Ctrl+D
+            break ;
+        // وسّع داخل heredoc فقط إذا delimiter بدون quotes
+        if (redir->quoted == NO_QUOTE)
+            expanded_line = expander_variables(line, exec_ctx);
+        else
+            expanded_line = ft_strdup(line);
+        free(line);
+        if (!expanded_line)
+            break ;
+        // delimiter فارغ -> ينتهي فقط بـ Ctrl+D
+        if (ft_strlen(delim) == 0 || ft_strcmp(expanded_line, delim) == 0)
+        {
+            free(expanded_line);
+            if (ft_strlen(delim) == 0)
+                continue ; // استمر حتى Ctrl+D
+            break ;
+        }
+        write(write_fd, expanded_line, ft_strlen(expanded_line));
+        write(write_fd, "\n", 1);
+        free(expanded_line);
+    }
+    return (0);
+}
+
+/*static int read_heredoc_lines(int write_fd, t_redir *redir, t_exec *exec_ctx)
+{
 	char *line;
 	char *expanded_delim;
 	char *expanded_line;
 	
 	if (redir->quoted)
-		expanded_delim = ft_strdup(redir->filename);
+		expanded_delim = ft_strdup(redir->file);
 	else
-		expanded_delim = expander_variables(redir->filename, exec_ctx);
+		expanded_delim = expander_variables(redir->file, exec_ctx);
 	while (1)
 	{
 		line = readline("> ");
@@ -138,7 +183,7 @@ static int read_heredoc_lines(int write_fd, t_redir *redir, t_exec *exec_ctx)
 	}
 	free(expanded_delim);
 	return (0);
-}
+}*/
 
 int	process_heredocs(t_cmd *cmd, t_exec *exec_ctx)
 {
@@ -157,7 +202,7 @@ int	process_heredocs(t_cmd *cmd, t_exec *exec_ctx)
 	current = cmd->redirections;
 	while (current)
 	{
-		if (current->type == TOKEN_HEREDOC)
+		if (current->type == TOKEN_REDIR_HEREDOC)
 		{
 			if (pipe(pipe_fds) < 0)
 			{
@@ -217,13 +262,20 @@ int	apply_redirections(t_redir *redirections, t_exec *exec_ctx)
 	current = redirections;
 	while (current)
 	{
+		if (current->ambiguous)
+		{
+			ft_putstr_fd("minishell: ", STDERR_FILENO);
+			ft_putstr_fd(current->file, STDERR_FILENO);
+			ft_putstr_fd(": ambiguous redirect\n", STDERR_FILENO);
+			return (-1);
+		}
 		if (current->type == TOKEN_REDIR_IN)
-			result = handle_input_redir(current->filename);
+			result = handle_input_redir(current->file);
 		else if (current->type == TOKEN_REDIR_OUT)
-			result = handle_output_redir(current->filename);
-		else if (current->type == TOKEN_APPEND)
-			result = handle_append_redir(current->filename);
-		else if (current->type == TOKEN_HEREDOC)
+			result = handle_output_redir(current->file);
+		else if (current->type == TOKEN_REDIR_APPEND)
+			result = handle_append_redir(current->file);
+		else if (current->type == TOKEN_REDIR_HEREDOC)
 			result = handle_heredoc(current);
 		else
 			result = 0;
@@ -233,6 +285,53 @@ int	apply_redirections(t_redir *redirections, t_exec *exec_ctx)
 	}
 	return (0);
 }
+/////////////////////////
+
+static int	is_assignment(char *arg)
+{
+	int	i;
+
+	if (!arg || (!ft_isalpha(arg[0]) && arg[0] != '_'))
+		return (0);
+	i = 1;
+	while (arg[i] && arg[i] != '=')
+	{
+		if (!ft_isalnum(arg[i]) && arg[i] != '_')
+			return (0);
+		i++;
+	}
+	return (arg[i] == '=');
+}
+
+static int	handle_assignments(t_cmd *cmd, t_exec *exec_ctx)
+{
+	int		i;
+	char	*equals;
+	char	*name;
+	char	*value;
+
+	i = 0;
+	while (cmd->args[i])
+	{
+		if (!is_assignment(cmd->args[i]))
+			return (0);
+		i++;
+	}
+	i = 0;
+	while (cmd->args[i])
+	{
+		equals = ft_strchr(cmd->args[i], '=');
+		name = ft_substr(cmd->args[i], 0, equals - cmd->args[i]);
+		value = ft_strdup(equals + 1);
+		if (name && value)
+			set_env_var(&exec_ctx->envp, name, value);
+		free(name);
+		free(value);
+		i++;
+	}
+	return (1);
+}
+/////////////////////////
 
 int	execute_simple_cmd(t_cmd *cmd, t_exec *exec_ctx)
 {
@@ -242,6 +341,7 @@ int	execute_simple_cmd(t_cmd *cmd, t_exec *exec_ctx)
 	int		saved_stdout;
 	char	*path;
 	int		sig_num;
+	struct stat st;
 
 	if (!cmd)
 		return (0);
@@ -273,6 +373,8 @@ int	execute_simple_cmd(t_cmd *cmd, t_exec *exec_ctx)
 	}
 	if (!cmd->args || !cmd->args[0])
 		status = 0;
+	else if (handle_assignments(cmd, exec_ctx))
+		status = 0;
 	else if (is_builtin(cmd->args[0]))
 		status = execute_builtin(cmd->args, exec_ctx);
 	else
@@ -280,8 +382,16 @@ int	execute_simple_cmd(t_cmd *cmd, t_exec *exec_ctx)
 		path = resolve_cmd_path(cmd->args[0], exec_ctx);
 		if (!path)
 		{
-			error_msg("minishell", cmd->args[0], "command not found");
-			status = 127;
+			if (ft_strchr(cmd->args[0], '/'))
+			{
+				error_msg("minishell", cmd->args[0], "No such file or directory");
+				status = 127;
+			}
+			else
+			{
+				error_msg("minishell", cmd->args[0], "command not found");
+				status = 127;
+			}
 		}
 		else
 		{
@@ -291,14 +401,21 @@ int	execute_simple_cmd(t_cmd *cmd, t_exec *exec_ctx)
 				signal(SIGINT, SIG_DFL);
 				signal(SIGQUIT, SIG_DFL);
 				execve(path, cmd->args, exec_ctx->envp);
-
-				if (errno == EACCES)
+				if (stat(path, &st) == 0 && S_ISDIR(st.st_mode))
+				{
+					error_msg("minishell", cmd->args[0], "Is a directory");
+					exit(126);
+				}
+				else if (errno == EACCES)
 				{
 					error_msg("minishell", cmd->args[0], "Permission denied");
 					exit(126);
 				}
-				perror("minishell");
-				exit(127);
+				else
+				{
+					perror("minishell");
+					exit(127);
+				}
 			}
 			else if (pid > 0)
 			{
@@ -306,7 +423,7 @@ int	execute_simple_cmd(t_cmd *cmd, t_exec *exec_ctx)
 				signal(SIGINT, SIG_IGN);
 				signal(SIGQUIT, SIG_IGN);
 				waitpid(pid, &status, 0);
-				signals();
+				setup_signals();
 
 				if (WIFEXITED(status))
 					status = WEXITSTATUS(status);
@@ -382,6 +499,7 @@ void	execute_pipeline_command(t_cmd *cmd, t_exec *exec_ctx, int **pipes,
 {
 	char	*path;
 	int		status;
+	struct stat st;
 
 	if (pipes)
 		setup_pipe_redirections(pipes, cmd_index, num_commands);
@@ -399,11 +517,19 @@ void	execute_pipeline_command(t_cmd *cmd, t_exec *exec_ctx, int **pipes,
 	path = resolve_cmd_path(cmd->args[0], exec_ctx);
 	if (!path)
 	{
-		error_msg("minishell", cmd->args[0], "command not found");
-		exit(127);
+		    if (ft_strchr(cmd->args[0], '/'))
+			    error_msg("minishell", cmd->args[0], "No such file or directory");
+		    else
+			    error_msg(NULL, cmd->args[0], "command not found"); //////
+		    exit(127);
 	}
 	execve(path, cmd->args, exec_ctx->envp);
-	if (errno == EACCES)
+	if (stat(path, &st) == 0 && S_ISDIR(st.st_mode))
+	{
+		error_msg("minishell", cmd->args[0], "Is a directory");
+		exit(126);
+	}
+	else if (errno == EACCES)
 	{
 		error_msg("minishell", cmd->args[0], "Permission denied");
 		exit(126);
@@ -423,6 +549,7 @@ int	execute_pipeline(t_cmd *commands, t_exec *exec_ctx)
 	int		i;
 	int		status;
 	int	sig_num;
+	int     sigint_received;
 	t_cmd	*current;
 
 	if (!commands)
@@ -473,13 +600,18 @@ int	execute_pipeline(t_cmd *commands, t_exec *exec_ctx)
 	close_pipes(pipes, num_commands - 1);
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
+	sigint_received = 0;
 	i = 0;
 	while (i < num_commands)
 	{
 		waitpid(pids[i], &status, 0);
+		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+			sigint_received = 1;
 		i++;
 	}
-	signals();
+	setup_signals();
+	if (sigint_received)
+		write(1, "\n", 1);
 	if (WIFEXITED(status))
 		exec_ctx->last_exit = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
